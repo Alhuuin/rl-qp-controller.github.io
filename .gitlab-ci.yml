@@ -1,0 +1,16 @@
+---
+image: python:latest
+
+pages:
+  stage: deploy
+  only:
+    - main
+    - master
+  script:
+    - cd docs/
+    - python3 -m pip install --upgrade pip
+    - python3 -m pip install -r requirements.txt
+    - mkdocs build --site-dir ../public
+  artifacts:
+    paths:
+      - public
