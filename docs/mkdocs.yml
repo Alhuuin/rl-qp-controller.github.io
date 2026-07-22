@@ -1,50 +1,89 @@
 ---
 # yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
-site_name: MkDocs Material Template
-site_description: Template for MkDocs Material
-site_author: Daniel A. A. Pelsmaeker
+site_name: RL QP Controller
+site_description: Deploy ONNX reinforcement-learning policies through an mc_rtc controller with optional QP constraint enforcement.
+site_author: RL QP Controller contributors
+site_url: https://example.github.io/rl-qp-controller/
+repo_url: https://github.com/example/rl-qp-controller
+repo_name: GitHub
+edit_uri: edit/main/docs/content/
 
 docs_dir: content/
-repo_url: https://github.com/Virtlink/mkdocs-material-template
-edit_uri: https://github.com/Virtlink/mkdocs-material-template/edit/main/docs
 
 nav:
-  - Home:
-      - index.md
+  - Overview: index.md
+  - Getting started:
+      - General information: getting-started/general-information.md
+      - Deploy a policy: getting-started/deploy-policy.md
+      - Configure the controller: getting-started/controller-configuration.md
+  - Reference:
+      - Architecture: reference/architecture.md
+      - Available observations: reference/observations.md
+      - Policy options: reference/policy-options.md
+      - Training conventions: reference/conventions.md
+      - Logging: reference/logging.md
+  - Development:
+      - Add an observation: development/add-observation.md
+      - Adapt to a new robot: development/adapt-new-robot.md
+  - Robot-specific information: robots/index.md
+  - Troubleshooting: troubleshooting.md
 
 theme:
   name: material
+  custom_dir: overrides
   language: en
+  logo: assets/logo-placeholder.svg
+  favicon: assets/logo-placeholder.svg
   icon:
-    logo: fontawesome/solid/book
     repo: fontawesome/brands/github
   palette:
-    # Light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: blue grey
-      accent: orange
+      primary: deep purple
+      accent: purple
       toggle:
         icon: material/weather-night
         name: Switch to dark mode
-    # Dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: blue grey
-      accent: orange
+      primary: deep purple
+      accent: purple
       toggle:
         icon: material/weather-sunny
         name: Switch to light mode
   font:
-    code: "JetBrains Mono"
+    code: JetBrains Mono
   features:
-    - navigation.tabs
     - navigation.top
     - navigation.indexes
+    - navigation.footer
+    - toc.follow
     - content.code.annotate
     - content.code.copy
     - content.action.edit
     - content.action.view
+
+extra_css:
+  - stylesheets/extra.css
+
+extra:
+  controller_tagline: A reusable mc_rtc architecture for deploying reinforcement-learning policies with optional QP constraint enforcement.
+  repositories:
+    template: https://github.com/example/rl-qp-controller-template
+    h1: https://github.com/example/rl-qp-controller-h1
+    hrp5p: https://github.com/example/rl-qp-controller-hrp5p
+  header_links:
+    - name: Code
+      url: https://github.com/example/rl-qp-controller
+    - name: Paper
+      url: https://example.org/paper
+    - name: Ecosystem
+      url: https://example.org/ecosystem
+  footer_links:
+    - name: GitHub
+      url: https://github.com/example/rl-qp-controller
+    - name: Paper
+      url: https://example.org/paper
 
 markdown_extensions:
   - abbr
@@ -52,10 +91,9 @@ markdown_extensions:
   - attr_list
   - def_list
   - footnotes
+  - md_in_html
   - toc:
       permalink: true
-  - pymdownx.arithmatex:
-      generic: true
   - pymdownx.betterem:
       smart_enable: all
   - pymdownx.caret
@@ -66,13 +104,6 @@ markdown_extensions:
   - pymdownx.highlight:
       guess_lang: false
   - pymdownx.inlinehilite
-  - pymdownx.keys:
-      key_map:
-        click: "Click"
-        left-click: "Left Click"
-        right-click: "Right Click"
-  - pymdownx.magiclink
-  - pymdownx.mark
   - pymdownx.saneheaders
   - pymdownx.smartsymbols
   - pymdownx.superfences
@@ -80,7 +111,6 @@ markdown_extensions:
       alternate_style: true
   - pymdownx.tasklist:
       custom_checkbox: true
-  - pymdownx.tilde
 
 plugins:
   - search

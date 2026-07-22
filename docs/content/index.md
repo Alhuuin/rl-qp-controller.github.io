@@ -1,132 +1,92 @@
 ---
-title: "MkDocs Material Template"
+title: RL QP Controller
 ---
-# MkDocs Material Template
-This is an MkDocs Material Template repository. It enables a useful set of extensions and plugins by default, and contains a Makefile that uses Docker to serve the documentation locally, and a Github workflow to publish the documentation on Github Pages by default.
 
-To use, invoke:
+<div class="hero" markdown>
 
-```bash
-make
+# RL QP Controller
+
+**Deploy ONNX reinforcement-learning policies inside an mc_rtc controller, with optional QP-based constraint enforcement.**
+
+<div class="hero-actions" markdown>
+[Get started](getting-started/general-information.md){ .md-button .md-button--primary }
+[Deploy a policy](getting-started/deploy-policy.md){ .md-button }
+[Explore the architecture](reference/architecture.md){ .md-button }
+</div>
+
+</div>
+
+<div class="status-strip" markdown>
+<span>Template-first design</span><span>ONNX inference</span><span>Convention-aware observations</span><span>Runtime policy switching</span>
+</div>
+
+## Project variants
+
+The project is maintained as a reusable base and as robot-specific adaptations. The HRP5P repository is currently the most recent implementation and is the source used for this documentation.
+
+<div class="repo-grid" markdown>
+
+<div class="repo-card" markdown>
+### :material-source-repository: Base template
+
+The robot-agnostic starting point. Use this repository when adapting the controller to a new robot.
+
+[Open template repository](https://github.com/example/rl-qp-controller-template){ .md-button }
+</div>
+
+<div class="repo-card" markdown>
+### :material-robot: Unitree H1
+
+The H1 adaptation, including its robot configuration, policies, and controller-specific integration.
+
+[Open H1 repository](https://github.com/example/rl-qp-controller-h1){ .md-button }
+</div>
+
+<div class="repo-card repo-card--featured" markdown>
+### :material-robot-industrial: HRP5P
+
+The latest adaptation. It currently provides the most complete reference for observations, policy loading, logging, GUI controls, FSM integration, and force-based contacts.
+
+[Open HRP5P repository](https://github.com/example/rl-qp-controller-hrp5p){ .md-button .md-button--primary }
+</div>
+
+</div>
+
+!!! warning "Repository links are placeholders"
+    Replace the three URLs above and the centralized links in `docs/mkdocs.yml` with the final public repository addresses.
+
+## What the controller does
+
+At runtime, the controller:
+
+1. discovers policy folders under `policies_root`;
+2. loads `policy.yaml`, `observations.yaml`, and the selected ONNX model;
+3. resolves training-environment aliases and joint ordering through `conventions.yaml`;
+4. constructs the policy input, including per-observation history;
+5. runs ONNX inference at the configured policy period;
+6. maps and scales the action into controller joint order;
+7. produces a target posture and PD torque command;
+8. either sends that torque through the QP task or bypasses the QP, depending on `use_QP`.
+
+```text
+Robot state ──► ObservationManager ──► ONNX policy ──► action mapping
+                    ▲                                      │
+                    │ history + convention                  ▼
+             observations.yaml                    q_rl = q0 + scale·action
+                                                           │
+                                      ┌────────────────────┴───────────────────┐
+                                      ▼                                        ▼
+                              TorqueJointTask + QP                     direct torque path
 ```
 
-This will publish the documentation at [localhost:8000](http://localhost:8000/) by default, and watch for any changes to the documentation source files. Other targets in the `Makefile` include:
+!!! danger "QP bypass is a diagnostic mode"
+    The GUI can switch QP enforcement off at runtime. In this mode, the controller applies the computed torque directly to the robot command path. Treat this as an expert debugging feature, not as a safety-equivalent operating mode.
 
-- `serve` (default) — Serves the documentation and watches for changes.
-- `build` — Builds the documentation.
-- `gh-deploy` — Deploys the documentation to Github Pages.
-- `version` — Prints the version information.
-- `help` — Prints help information.
+## Documentation map
 
-[MkDocs Material Documentation](https://squidfunk.github.io/mkdocs-material/){ .md-button }
-
-
-## Customization
-Change the fields in `mkdocs.yml` to suit your needs. In particular, change the `site_name`, `site_description` and `site_author`, and the URLs for `repo_url` (where the Github button links to) and `edit_uri` (where the pages can be edited).
-
-
-## Adding Plugins
-A few plugins have been enabled by default. To add additional plugins, add them to the `plugins` section of `mkdocs.yml` ([documentation](https://www.mkdocs.org/user-guide/configuration/#plugins)) and the required packages to `requirements.txt`. The plugins are automatically installed into the Docker image.
-
-
-## Updating MkDocs Material
-To change the version of MkDocs Material, change the version number in `requirements.txt`. The version is automatically updated in the Docker image as well.
-
-
-## Serving on a Different Port
-By default the documentation is served on port `8000`. To change the default temporarily, invoke `make` like this:
-
-```bash
-make PORT=8080
-```
-
-To permanently chang the port, change the value of `PORT` in the `Makefile`.
-
-```Makefile
-PORT ?= 8080
-```
-
-
-## Makefile on Top-Level
-If you want to have the `Makefile` on the top level instead of in the `docs/` directory, move it to the top level directory and change the `ROOT` variable in the `Makefile` to:
-
-```Makefile
-ROOT ?= $(DIR)/.
-```
-
-!!! note ""
-    Note the slash-dot `/.` at the end. The `ROOT` directory points to the directory with `mkdocs.yml` relative to the `Makefile`.
-
-
-## Different branch
-The template assumes your default branch is named `main` or `master`. If it's named something else, change the `on push branches` in `.github/workflows/docs.yml`:
-
-```yaml
-on:
-  push:
-    branches:
-      - my-docs-branch
-```
-
-# Deploying
-This documentation can be deployed on Github (`.github/workflows/documentation.yml`)
-or Gitlab (`.gitlab-ci.yml`).
-
-
-# Updating to Latest Template
-This page describes how to update your documentation to include the latest
-changes to the template repository.
-
-
-## Template Remote
-To update to the latest version of the template, first ensure the template
-repository is added as a remote for the documentation repository:
-
-```sh
-git remote -v
-
-origin      git@github.com:MyUsername/my-docs-repo.git (fetch)
-origin      git@github.com:MyUsername/my-docs-repo.git (push)
-template    git@github.com:Virtlink/mkdocs-material-template.git (fetch)
-template    git@github.com:Virtlink/mkdocs-material-template.git (push)
-```
-
-If not, add the template remote repository:
-
-```sh
-git remote add template git@github.com:Virtlink/mkdocs-material-template.git
-```
-
-
-## Fetch Latest Changes
-Fetch the changes in the template remote:
-
-```sh
-git fetch template
-```
-
-
-## Merge Latest Changes
-Merge the latest changes from the template's `main` branch into your repository:
-
-```sh
-git merge template/main
-```
-
-??? tip "Unrelated Histories"
-    If you get the error `fatal: refusing to merge unrelated histories`, then
-    your documentation repository was never based on the template. However, you
-    can force Git to merge the template anyway by using this command:
-
-    ```sh
-    git merge template/main --allow-unrelated-histories
-    ```
-
-
-## Fix Any Conflicts, and Commit
-Now use the Git command line to fix any merge conflicts, and commit the result.
-
-
-## Fix the Breaking Changes
-New versions of MkDocs and MkDocs Material can have breaking changes.
-[Find them here](https://squidfunk.github.io/mkdocs-material/upgrade/#changes-to-mkdocsyml).
+- **Getting started** explains the policy folder format and controller configuration.
+- **Architecture** follows the code from configuration loading to action application.
+- **Observations** documents every registered observation type and its parameters.
+- **Logging and GUI** lists the actual logger entries, console messages, and runtime controls.
+- **Development** explains how to add observations or adapt the template to another robot.
+- **Robot-specific information** distinguishes reusable components from HRP5P-specific behavior.
