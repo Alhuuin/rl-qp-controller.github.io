@@ -14,6 +14,7 @@ nav:
   - Overview: index.md
   - Getting started:
       - General information: getting-started/general-information.md
+      - Configure conventions.yaml: getting-started/configure-conventions.md
       - Deploy a policy: getting-started/deploy-policy.md
       - Configure the controller: getting-started/controller-configuration.md
   - Reference:
@@ -32,22 +33,22 @@ theme:
   name: material
   custom_dir: overrides
   language: en
-  logo: assets/logo-placeholder.svg
-  favicon: assets/logo-placeholder.svg
+  logo: assets/logo.png
+  favicon: assets/icon.png
   icon:
     repo: fontawesome/brands/github
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: deep purple
-      accent: purple
+      primary: blue grey
+      accent: blue
       toggle:
         icon: material/weather-night
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: deep purple
-      accent: purple
+      primary: blue grey
+      accent: blue
       toggle:
         icon: material/weather-sunny
         name: Switch to light mode

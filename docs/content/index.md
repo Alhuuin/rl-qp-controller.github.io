@@ -16,13 +16,13 @@ title: RL QP Controller
 
 </div>
 
-<div class="status-strip" markdown>
+<!-- <div class="status-strip" markdown>
 <span>Template-first design</span><span>ONNX inference</span><span>Convention-aware observations</span><span>Runtime policy switching</span>
-</div>
+</div> -->
 
 ## Project variants
 
-The project is maintained as a reusable base and as robot-specific adaptations. The HRP5P repository is currently the most recent implementation and is the source used for this documentation.
+The project is maintained as a reusable base and as robot-specific adaptations. Here are the currently available versions :
 
 <div class="repo-grid" markdown>
 
@@ -31,7 +31,7 @@ The project is maintained as a reusable base and as robot-specific adaptations. 
 
 The robot-agnostic starting point. Use this repository when adapting the controller to a new robot.
 
-[Open template repository](https://github.com/example/rl-qp-controller-template){ .md-button }
+[Open template repository](https://github.com/example/rl-qp-controller-template){ .md-button .md-button--primary }
 </div>
 
 <div class="repo-card" markdown>
@@ -43,23 +43,20 @@ The H1 adaptation, including its robot configuration, policies, and controller-s
 </div>
 
 <div class="repo-card repo-card--featured" markdown>
-### :material-robot-industrial: HRP5P
+### :material-robot: HRP5P
 
-The latest adaptation. It currently provides the most complete reference for observations, policy loading, logging, GUI controls, FSM integration, and force-based contacts.
+The HRP5P adaptation, including its robot configuration, policies, controller-specific integration, and FSM states.
 
-[Open HRP5P repository](https://github.com/example/rl-qp-controller-hrp5p){ .md-button .md-button--primary }
+[Open HRP5P repository](https://github.com/example/rl-qp-controller-hrp5p){ .md-button }
 </div>
 
 </div>
-
-!!! warning "Repository links are placeholders"
-    Replace the three URLs above and the centralized links in `docs/mkdocs.yml` with the final public repository addresses.
 
 ## What the controller does
 
 At runtime, the controller:
 
-1. discovers policy folders under `policies_root`;
+1. searches for policy folders under `policies_root`;
 2. loads `policy.yaml`, `observations.yaml`, and the selected ONNX model;
 3. resolves training-environment aliases and joint ordering through `conventions.yaml`;
 4. constructs the policy input, including per-observation history;
@@ -80,7 +77,7 @@ Robot state ──► ObservationManager ──► ONNX policy ──► action 
 ```
 
 !!! danger "QP bypass is a diagnostic mode"
-    The GUI can switch QP enforcement off at runtime. In this mode, the controller applies the computed torque directly to the robot command path. Treat this as an expert debugging feature, not as a safety-equivalent operating mode.
+    Bypassing the QP can be useful is some cases for testing purposes, but it looses all the safety guarantees brought by the QP. Please refrain from running this controller on the real robot while `use_QP` is false
 
 ## Documentation map
 
@@ -89,4 +86,4 @@ Robot state ──► ObservationManager ──► ONNX policy ──► action 
 - **Observations** documents every registered observation type and its parameters.
 - **Logging and GUI** lists the actual logger entries, console messages, and runtime controls.
 - **Development** explains how to add observations or adapt the template to another robot.
-- **Robot-specific information** distinguishes reusable components from HRP5P-specific behavior.
+- **Robot-specific information** gives any relevant information relative to existing robot-specific versions.
