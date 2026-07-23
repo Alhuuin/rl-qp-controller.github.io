@@ -61,8 +61,31 @@ This is usually enough to start: one convention, at least one joint group, and o
 | `conventions` | Yes | Root map containing named convention profiles. |
 | `conventions.<name>.joint_groups` | Yes | Joint groups used by action mapping and joint-based observations. |
 | `conventions.<name>.type_aliases` | No | Maps training-environment observation names to internal observation types. |
-| `conventions.<name>.observation_defaults` | No | Convention-specific default observation parameters. |
-| `conventions.general.observation_defaults` | No | Defaults shared by all conventions. |
+| `conventions.<name>.observation_defaults` | No | Convention-specific default observation parameters. Applied before `observations.yaml`, which can override them. |
+| `conventions.general.observation_defaults` | No | Defaults shared by all conventions, applied before convention-specific ones. |
+
+### type_aliases
+
+Training environments often give observations different names from the controller's internal types. `type_aliases` lets you use those exact training names in `observations.yaml` without any code change: an alias entry maps the training-side name to the matching internal observation type.
+
+For example, if your training environment called joint positions `joint_pos_rel`, you can write:
+
+```yaml
+type_aliases:
+  joint_pos_rel: joint_pos
+```
+
+and then use `type: joint_pos_rel` in `observations.yaml` exactly as you would have in the training config, keeping the integration seamless and the policy files readable.
+
+### observation_defaults
+
+If you know a set of parameters will be the same for most policies using a convention — for example, `joint_pos` always using all joints and being relative to the default pose — you can specify them directly in `conventions.yaml` instead of repeating them in every `observations.yaml`.
+
+These defaults are applied first. Any parameters you specify in a policy's own `observations.yaml` will override them, so adding a policy that deviates from the convention defaults is fine: just set the needed parameters locally.
+
+!!! warning "Defaults can produce unexpected behavior if overlooked"
+    Convention defaults are easy to forget when deploying a new policy against an existing convention.
+    Always check `observation_defaults` — both in `conventions.<name>` and in `conventions.general` — before assuming an observation uses only the parameters written in `observations.yaml`.
 
 ## Build it in 3 steps
 
@@ -99,6 +122,7 @@ This is usually enough to start: one convention, at least one joint group, and o
 ## Validation checklist
 
 - [ ] Every joint group order matches training/export order exactly.
-- [ ] Aliases map to registered internal observation types.
-- [ ] Defaults do not silently override values you expect to define in `observations.yaml`.
-- [ ] The `training_convention` used by each policy exists in this file.
+- [ ] The `training_convention` referenced by each policy exists in this file.
+- [ ] All `type_aliases` values are registered internal observation types (check the [observations reference](../reference/observations.md)).
+- [ ] Every observation name used in `observations.yaml` resolves either directly or through an alias.
+- [ ] `observation_defaults` — both in `conventions.general` and the convention profile — are what you intend for each policy using this convention.

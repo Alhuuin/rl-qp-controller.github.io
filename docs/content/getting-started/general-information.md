@@ -8,7 +8,7 @@ The RL QP Controller loads reinforcement-learning policies, prepares their obser
 The project intentionally separates configuration by scope so each file has one clear role.
 
 - Controller-level configuration: robot-level and runtime integration settings (observation source, base body, policies root, default policy) belong to the controller configuration file. See [Configure the controller](controller-configuration.md).
-- Shared convention configuration: `conventions.yaml` defines training-environment conventions (joint groups and order, eventual type aliases, default observation parameters). Policy confugiration files depend on it. See [Configure conventions.yaml](configure-conventions.md).
+- Shared convention configuration: `conventions.yaml` defines training-environment conventions (joint groups and order, eventual type aliases, default observation parameters). Policy configuration files depend on it. See [Configure conventions.yaml](configure-conventions.md).
 - Policy-folder configuration: each policy is described by a directory containing an ONNX model alongside `policy.yaml` and `observations.yaml`.
 	- `policy.yaml` defines action mapping and control parameters.
 	- `observations.yaml` defines policy input terms, order, and history.

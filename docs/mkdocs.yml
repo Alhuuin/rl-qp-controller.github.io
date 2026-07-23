@@ -21,12 +21,18 @@ nav:
       - Architecture: reference/architecture.md
       - Available observations: reference/observations.md
       - Policy options: reference/policy-options.md
+      - Controller configuration options: reference/controller-options.md
       - Training conventions: reference/conventions.md
       - Logging: reference/logging.md
   - Development:
       - Add an observation: development/add-observation.md
       - Adapt to a new robot: development/adapt-new-robot.md
-  - Robot-specific information: robots/index.md
+  - Robot-specific information:
+      - Overview: robots/index.md
+      - Variant comparison: robots/comparison.md
+      - Base template: robots/base-template.md
+      - Unitree H1: robots/h1.md
+      - HRP5P: robots/hrp5p.md
   - Troubleshooting: troubleshooting.md
 
 theme:

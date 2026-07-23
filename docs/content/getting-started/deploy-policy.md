@@ -119,6 +119,9 @@ observations:
 !!! danger "The observations in this file should reflect exactly the expected policy observations"
     The exact same term order, joint order, scaling, and history lengths must match training.
 
+!!! warning "Convention defaults silently affect your observations"
+    Before finalising `observations.yaml`, check `observation_defaults` in both `conventions.general` and your selected convention profile. These defaults are merged into each observation entry before your local parameters, and omitting a parameter does not mean it is absent — it may come from the convention. Override any default that does not match training.
+
 ### observations.yaml options
 
 | Entry | Required | Default | Description |

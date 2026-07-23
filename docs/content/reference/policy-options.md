@@ -4,79 +4,91 @@ title: Policy options
 
 # Policy options
 
-Each policy directory contains a `policy.yaml`. The current parser expects `action` and `control` sections and expands joint-indexed values into full mc_rtc reference-joint order.
+This page documents fields read by the current policy parser.
+
+## Minimal accepted `policy.yaml`
+
+```yaml
+action:
+  joints: all
+
+control:
+  kp:
+    jointName1: 100.0
+    jointName2: 100.0
+  kd:
+    jointName1: 10.0
+    jointName2: 10.0
+```
+
+`action.joints`, `control.kp`, and `control.kd` are the essential policy declarations. Gain maps must cover the controller joints required by the runtime.
 
 ## Complete structure
 
 ```yaml
-name: walking_policy
-onnx: walking_policy.onnx
+name: my_policy
+onnx: my_policy.onnx
+use_QP: true  # legacy top-level fallback
 
 action:
-  joints: all_no_grippers
+  joints: all
   controlled_joints: legs
-  scale: 1.0
+  scale: 0.25
   q0:
-    joint_a: 0.0
-    joint_b: 0.4
+    jointName1: 0.0
+    jointName2: 0.0
 
 control:
   use_QP: true
-  policy_step_size: 0.02
-  phase_period: 0.8333333333
-  kp_scale: 1.0
-  kd_scale: 1.0
+  period_s: 0.02
+  # frequency_hz: 50.0
+  pd_gains_ratio: 1.0
+  phase_period: 1.0
   kp:
-    joint_a: 100.0
-    joint_b: 120.0
+    jointName1: 100.0
+    jointName2: 100.0
   kd:
-    joint_a: 10.0
-    joint_b: 12.0
+    jointName1: 10.0
+    jointName2: 10.0
 ```
 
-## Top-level options
+## Top-level fields
 
-| Option | Required | Behavior |
-|---|---:|---|
-| `name` | No | Defaults to the policy folder name. Must be unique across loaded policies. |
-| `onnx` | No | Defaults to `<name>.onnx`. Resolved relative to the policy folder. |
+| Field | Required | Default | Description |
+|---|---:|---|---|
+| `name` | No | folder name | Runtime name. |
+| `onnx` | No | `<name>.onnx` | ONNX filename. |
+| `use_QP` | No | `true` | Legacy fallback when `control.use_QP` is absent. |
 
 ## `action`
 
-| Option | Required | Behavior |
-|---|---:|---|
-| `joints` | Yes | Convention joint group defining ONNX output size and order. |
-| `controlled_joints` | No | Subset actually applied to `q_rl`; defaults to `joints`. |
-| `scale` | No | Scalar applied to every controller joint, or a per-joint map. Default scalar: `1.0`. |
-| `q0` | No | Full per-joint default pose map. When present, it must cover every controller reference joint. |
+| Field | Required | Default | Description |
+|---|---:|---|---|
+| `joints` | Yes | — | Convention group defining ONNX output order and size. |
+| `controlled_joints` | No | `joints` | Applied subset; must be contained in `joints`. |
+| `scale` | No | `1.0` | Action scale accepted by the runtime. |
+| `q0` | No | controller/default posture | Full default-pose map when provided. |
 
-!!! warning "Per-joint maps are expanded in mc_rtc order"
-    `kp`, `kd`, action scales, and `q0` are stored in full controller order, even when the ONNX action covers only a subset.
+The ONNX output size is checked against `action.joints`, not `controlled_joints`.
 
 ## `control`
 
-| Option | Default | Behavior |
-|---|---:|---|
-| `use_QP` | `true` | Initial QP enforcement mode. |
-| `policy_step_size` | `0.02` s | ONNX inference period. Must be positive. |
-| `kp_scale` | `1.0` | Initial stiffness multiplier. Must be positive. |
-| `kd_scale` | `1.0` | Initial damping multiplier. Must be positive. |
-| `phase_period` | `1.0` s | Period used by the `phase` observation. Must be positive. |
-| `kp` | — | Per-joint stiffness map. Current parser requires all controller joints. |
-| `kd` | — | Per-joint damping map. Current parser requires all controller joints. |
+| Field | Required | Default | Description |
+|---|---:|---|---|
+| `use_QP` | No | top-level value, then `true` | QP path or direct bypass. |
+| `period_s` | No | `0.02` | Inference period in seconds. |
+| `frequency_hz` | No | — | Alternative to `period_s`. |
+| `pd_gains_ratio` | No | `1.0` | Runtime gain scaling. |
+| `phase_period` | No | observation value, then `1.0` | Runtime phase period. |
+| `kp` | Yes | — | Base stiffness map. |
+| `kd` | Yes | — | Base damping map. |
 
-The parser retains fallback compatibility with older top-level keys such as `use_QP`, `policy_step_size`, and `pd_gains_ratio`, but new policies should use the structured sections above.
+Specify only one of `period_s` and `frequency_hz`.
 
-!!! info "`period_ms` versus current parser"
-    The provided HRP5P example file contains `period_ms: 20.0`, but the current parser reads `control.policy_step_size` in seconds and defaults it to `0.02`. To avoid ambiguity, write `policy_step_size: 0.02` explicitly in new policy files.
+## Phase precedence
 
-## Validation rules
+The runtime first reads top-level `phase_period` from `observations.yaml`, defaulting to `1.0`. `control.phase_period` overrides it.
 
-Policy loading fails when:
+## Validation failures
 
-- the name, folder, ONNX path, or `action.joints` is empty;
-- `policy_step_size`, `kp_scale`, or `kd_scale` is non-positive;
-- `kp` or `kd` does not cover all reference joints;
-- a provided `q0` does not cover all reference joints;
-- `controlled_joints` contains a joint absent from `action.joints`;
-- the resolved action-joint count differs from the ONNX output size.
+Loading fails for unresolved paths/names, missing or empty `action.joints`, simultaneous period and frequency, non-positive timing or gain ratio, incomplete gain or provided `q0` maps, invalid controlled subset, or ONNX output mismatch.

@@ -4,48 +4,85 @@ title: Configure the controller
 
 # Configure the controller
 
-The robot-level controller file configures mc_rtc, policy discovery, the observation source, constraints, FSM transitions, and robot-specific gains.
+This page contains the **minimum controller-level setup** required before loading a policy. Every available option is documented separately in [Controller configuration reference](../reference/controller-options.md).
 
-## Reusable RL configuration
+## 1. Select the robot state used by observations
 
 ```yaml
 robot:
   base_body: pelvis
   observation_source: realRobot
-
-policies_root: /path/to/policies
-default_policy: gazelle2
 ```
 
-| Option | Default | Description |
-|---|---|---|
-| `robot.base_body` | `base_link` | Fallback body for observations such as projected gravity. |
-| `robot.observation_source` | `realRobot` | `realRobot` or `robot`. |
-| `policies_root` | `policies` | Directory scanned for policy subfolders. |
-| `default_policy` | First loaded policy when absent | Name of the policy selected at startup. |
+`base_body` is the default body used by floating-base observations. `observation_source` selects either `realRobot` or `robot`.
 
-## mc_rtc integration
+Use `realRobot` when observations must reflect measured hardware state. Use `robot` only when the control robot is intentionally the source.
 
-The HRP5P implementation configures:
+## 2. Point to the policy directory
 
-- a ground robot module;
-- encoder, body-sensor, and external-force observer components;
-- acceleration contact constraints;
-- compound-joint constraints;
-- collision constraints;
-- FSM state libraries, state files, transitions, and initial state.
+```yaml
+policies_root: "@CMAKE_CURRENT_SOURCE_DIR@/policies"
+default_policy: my_policy
+```
 
-These sections are robot/controller integration details, not policy-format requirements.
+`policies_root` contains `conventions.yaml` and one subdirectory per policy. `default_policy` must resolve to a discovered policy name.
 
-## Initial posture behavior
+## 3. Configure the minimum observer pipeline
 
-The HRP5P controller includes `is_initial_posture_rl`. When enabled, the initial state uses the active policy's `q_zero` as its posture target. Otherwise, the regular mc_rtc posture-task target remains the reference.
+The selected observation source must provide every signal requested in `observations.yaml`. Joint observations typically need an encoder observer:
 
-This option is useful when a learned policy expects a crouched or otherwise non-standard neutral posture.
+```yaml
+ObserverPipelines:
+  name: MainPipeline
+  gui: true
+  log: true
+  observers:
+    - type: Encoder
+      config:
+        velocity: encoderVelocities
+```
 
-## High gains
+Add body-sensor, tilt, force, or external-force observers only when the robot and selected observations require them.
 
-The HRP5P file also defines full `high_kp` and `high_kd` maps. These are separate from the policy gains and are used by robot-specific controller behavior. A new robot adaptation must either provide valid maps or remove the feature consistently from the controller source.
+## 4. Configure constraints deliberately
 
-!!! warning "Separate generic and robot-specific configuration"
-    Do not copy HRP5P observer names, surfaces, force sensors, gain maps, or contact logic unchanged into a new robot. Keep the reusable policy/runtime keys, then rebuild the mc_rtc integration around the target robot model.
+The template contains examples, not universal defaults:
+
+```yaml
+collisions:
+  - type: collision
+    useMinimal: true
+
+# constraints:
+#   - type: contact
+#     contactType: acceleration
+#   - type: compoundJoint
+```
+
+Do not copy contact surfaces, force-sensor names, observer callbacks, or compound-joint assumptions from another robot without checking the target robot module.
+
+## 5. Define the FSM entry point
+
+The base template and H1 adaptation use one state that runs the policy immediately. HRP5P starts in a posture-controlled `Initial` state and transitions to a dedicated `RL` state.
+
+A single-state configuration looks like:
+
+```yaml
+transitions:
+  - [MyController_Initial, OK, MyController_Initial, Strict]
+init: MyController_Initial
+```
+
+Choose the state architecture before copying transitions. See the [variant comparison](../robots/comparison.md).
+
+## Validation checklist
+
+- [ ] `base_body` exists on the selected observation robot.
+- [ ] `observation_source` provides complete encoders and every requested sensor.
+- [ ] `policies_root` exists at runtime.
+- [ ] `default_policy` matches a discovered policy.
+- [ ] constraints and collisions reference valid robot resources.
+- [ ] the configured initial state is compiled and exported.
+- [ ] the robot command interface supports the control mode used by the controller.
+
+For all integration settings and variant-specific fields, continue with [Controller configuration reference](../reference/controller-options.md).

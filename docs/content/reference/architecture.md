@@ -4,143 +4,307 @@ title: Architecture
 
 # Architecture
 
-This page describes the architecture implemented by the current HRP5P controller. Class names and behavior are taken from the source code rather than from an abstract design proposal.
+This page presents the overall architecture of the RL-QP controller framework.
 
-## Main components
+The goal of the project is to provide a reusable reinforcement-learning controller built on top of **mc_rtc**, while keeping the robot-specific implementation isolated from the generic RL infrastructure.
 
-<div class="component-grid" markdown>
+The architecture is therefore split into three layers:
 
-<div class="component-card" markdown>
-### `PolicyManager`
-Discovers valid policy folders, parses each policy, checks duplicate names, and selects the default policy.
-</div>
+- the **generic RL framework**, shared by every robot;
+- the **robot adaptation**, which connects the framework to a specific robot;
+- the **policy configuration**, which allows multiple trained policies to be loaded without modifying the controller.
 
-<div class="component-card" markdown>
-### `RLPolicyRuntime`
-Owns the active policy, convention, joint maps, observations, action buffers, gains, command, phase, and policy timer.
-</div>
+---
 
-<div class="component-card" markdown>
-### `ObservationManager`
-Builds observations from YAML, maintains their history buffers, and concatenates the final ONNX input.
-</div>
+# Project structure
 
-<div class="component-card" markdown>
-### `RLPolicyInterface`
-Loads one ONNX model, validates its input/output shape, and executes inference using ONNX Runtime.
-</div>
-
-<div class="component-card" markdown>
-### `RLStateRunner`
-Connects the runtime to mc_rtc FSM states through common `start`, `run`, and teardown behavior.
-</div>
-
-<div class="component-card" markdown>
-### `HRP5pRLQPController`
-Owns mc_rtc tasks, GUI and logger entries, robot-specific contacts, limits, observers, and torque application.
-</div>
-
-</div>
-
-## Startup sequence
-
-When the controller is constructed, the runtime performs the following sequence:
+The repository is organized into a few major components.
 
 ```text
-RLPolicyRuntime::configure
-├── copy controller configuration
-├── read robot.base_body and robot.observation_source
-├── store robot().refJointOrder()
-├── create the default ObservationRegistry
-├── PolicyManager::load(...)
-└── loadPolicy(default_policy)
-    ├── configureControl(...)
-    ├── load training convention
-    ├── configureAction(...)
-    ├── configureNetwork(...)
-    ├── configureObservations(...)
-    ├── reset observation history
-    └── validate observation size against ONNX input
+├── include/
+│   ├── controller/
+│   ├── observations/
+│   ├── policy/
+│   ├── runtime/
+│   ├── states/
+│   └── utils/
+│
+├── src/
+│   ├── controller/
+│   ├── observations/
+│   ├── policy/
+│   ├── runtime/
+│   ├── states/
+│   └── utils/
+│
+├── etc/
+│   ├── controller configuration
+│   ├── FSM configuration
+│   └── robot-specific configuration
+│
+├── policies/
+│   ├── policy1/
+│   ├── policy2/
+│   └── ...
+│
+└── plugins/
 ```
 
-A policy folder is considered loadable when it contains `policy.yaml`, `observations.yaml`, and an `.onnx` file. Policy folders are sorted alphabetically before loading.
-
-!!! note "Current-folder policy mode"
-    The policy manager also contains support for treating the current folder itself as a policy folder. In the standard installed setup, `policies_root` points to a directory containing policy subdirectories.
-
-## Runtime loop
-
-`RLStateRunner::run()` calls `RLPolicyRuntime::runPolicyStepIfNeeded()` every controller cycle. The runtime increments two independent timers:
-
-- `policyTimer_`, which controls when ONNX inference runs;
-- `phaseElapsedTime_`, which generates a normalized cyclic phase.
-
-Inference only runs when `policyTimer_ >= policyStepSize_`. Between policy updates, the latest action and target are retained.
-
-At each policy update:
-
-1. `ObservationManager` computes and concatenates the observation vector.
-2. The vector length is compared with the ONNX input size.
-3. `RLPolicyInterface::predict()` produces the raw action.
-4. The action length is compared with the resolved `action.joints` mapping.
-5. Every output is scaled in controller joint order.
-6. Only joints selected by `action.controlled_joints` are applied to `q_rl`.
-7. Non-controlled joints remain at `q_zero`.
-
-The resulting target follows:
+The code can also be viewed as four interacting modules.
 
 ```text
-q_rl[j] = q_zero[j] + action_scale[j] * action[action_index]
+             Policy folders
+                    │
+                    ▼
+          PolicyManager
+                    │
+                    ▼
+          RLPolicyRuntime
+                    │
+       ┌────────────┴────────────┐
+       ▼                         ▼
+ObservationManager      RLPolicyInterface
+       │                         │
+       └────────────┬────────────┘
+                    ▼
+             RLStateRunner
+                    │
+                    ▼
+      Robot-specific controller
 ```
 
-for controlled joints only.
+The generic framework never directly manipulates a specific robot. Instead, it produces desired joint targets that are consumed by the robot controller.
 
-## Action mappings
+---
 
-The runtime keeps two separate mappings:
+# Main components
+
+## PolicyManager
+
+Responsible for discovering available policies.
+
+It:
+
+- scans the policy directory;
+- validates policy folders;
+- parses `policy.yaml`;
+- loads training conventions;
+- prevents duplicate policy names;
+- selects the default policy.
+
+Once a policy has been selected, it is passed to the runtime.
+
+---
+
+## RLPolicyRuntime
+
+`RLPolicyRuntime` is the central object of the framework.
+
+It owns almost every piece of data required while the controller is running, including:
+
+- the active policy;
+- the loaded ONNX network;
+- the observation manager;
+- the action mappings;
+- the current policy command;
+- the policy timers;
+- the phase generator;
+- PD gains;
+- action scaling;
+- `q_zero`;
+- `q_rl`;
+- convention information.
+
+Almost every other component communicates through the runtime.
+
+---
+
+## ObservationManager
+
+The observation manager constructs the neural-network input.
+
+It:
+
+- creates observations from YAML;
+- owns every observation object;
+- maintains history buffers;
+- concatenates the final observation vector;
+- validates the observation size.
+
+Individual observations are implemented as independent classes, making new observations easy to add without modifying the manager itself.
+
+---
+
+## RLPolicyInterface
+
+The policy interface wraps ONNX Runtime.
+
+Its responsibilities are to:
+
+- load the ONNX model;
+- validate network dimensions;
+- execute inference;
+- return the predicted action vector.
+
+It deliberately knows nothing about robots or observations.
+
+---
+
+## RLStateRunner
+
+`RLStateRunner` provides the bridge between the generic RL framework and the mc_rtc FSM.
+
+It centralizes logic common to RL states, including:
+
+- initialization;
+- runtime execution;
+- phase reset;
+- history reset;
+- GUI updates;
+- exception handling.
+
+Robot-specific states usually only contain the logic required to enter or leave an RL mode.
+
+---
+
+## Robot controller
+
+The controller itself is the robot-dependent part of the project.
+
+It is responsible for everything that depends on the robot implementation, for example:
+
+- robot tasks;
+- constraints;
+- contact management;
+- observers;
+- GUI entries;
+- logging;
+- control mode;
+- torque application;
+- hardware interfaces.
+
+The exact implementation differs between robot adaptations.
+
+---
+
+# Runtime sequence
+
+Controller startup follows the sequence below.
+
+```text
+Controller
+    │
+    ▼
+RLPolicyRuntime::configure()
+    │
+    ├── load controller configuration
+    ├── create ObservationRegistry
+    ├── discover available policies
+    ├── load default policy
+    ├── configure observations
+    ├── configure actions
+    ├── load ONNX network
+    └── validate dimensions
+```
+
+After initialization, every controller cycle executes:
+
+```text
+mc_rtc
+    │
+    ▼
+RLStateRunner
+    │
+    ▼
+RLPolicyRuntime
+    │
+    ├── update timers
+    ├── update observations
+    ├── run ONNX if needed
+    ├── compute q_rl
+    └── expose targets
+    │
+    ▼
+Robot controller
+    │
+    ├── QP control
+    └── direct control (optional)
+```
+
+---
+
+# Policy execution
+
+Policy inference only runs at the configured policy frequency.
+
+During intermediate controller cycles, the previously predicted action is reused.
+
+When inference is performed, the runtime:
+
+1. computes observations;
+2. concatenates the observation vector;
+3. validates its size;
+4. executes the ONNX network;
+5. validates the output size;
+6. applies action scaling;
+7. computes the target posture.
+
+For each controlled joint:
+
+```text
+q_rl = q_zero + action_scale × action
+```
+
+while joints outside `controlled_joints` remain at their default position.
+
+---
+
+# Action mappings
+
+The runtime maintains two different mappings.
 
 | Mapping | Purpose |
-|---|---|
-| `actionToControllerMap_` | Defines the exact ONNX output layout using `action.joints`. Its size must equal the ONNX action size. |
-| `controlledActionControllerIndices_` | Defines which mapped outputs are actually applied. It must be a subset of `action.joints`. |
+|----------|---------|
+| `actionToControllerMap_` | Defines how ONNX outputs correspond to controller joints. |
+| `controlledActionControllerIndices_` | Defines which mapped outputs are actually applied. |
 
-This separation supports policies that output a whole-body action while a controller experiment applies only a subset, such as the legs.
+This separation allows a policy to predict a full-body action while the controller applies only part of it.
 
-!!! warning "Do not confuse action layout and controlled subset"
-    Changing `controlled_joints` does **not** change the ONNX output size or ordering. The ONNX output must still match `action.joints` exactly.
+---
 
-## Observation source
+# Observation source
 
-The controller accepts two robot-state sources:
+Observations can be built from either:
 
-| `robot.observation_source` | Runtime object |
-|---|---|
-| `realRobot` | `ctl.realRobot(robotName)`; this is the default |
-| `robot` | `ctl.robot()` |
+| Configuration | Source |
+|--------------|--------|
+| `realRobot` | Measured robot state |
+| `robot` | Internal controller model |
 
-This choice is applied consistently through `ObservationContext`. An invalid value causes startup to fail.
+This choice is propagated automatically through the observation context.
 
-## Default pose resolution
+---
 
-`q_zero` is stored in full mc_rtc reference-joint order.
+# Default pose
 
-- When `action.q0` is provided, it must contain every controller joint and is copied into `q_zero`.
-- Otherwise, the runtime extracts the current mc_rtc posture-task target for revolute joints.
+`q_zero` is the reference posture used to reconstruct policy targets.
 
-This makes the default posture task the fallback reference pose while allowing a policy-specific trained pose to override it.
+It can either:
 
-## QP and direct torque paths
+- be specified explicitly in the policy configuration;
+- or be extracted from the current posture task.
 
-The controller owns a `mc_tasks::TorqueJointTask`. The runtime updates its stiffness and damping from the active policy gains. Depending on `use_QP`:
+The resulting target is then computed by adding the policy output to this reference posture.
 
-- **QP enforced:** the torque target is handled through the QP task and controller constraints;
-- **QP bypassed:** the controller writes the computed torque command directly to the robot joints.
+---
 
-The precise safety constraints available depend on the robot controller configuration. In the HRP5P configuration, contact and compound-joint constraints are enabled, and collision constraints are configured separately.
+# Torque generation
 
-## FSM integration
+The runtime updates the active PD gains every time a policy is loaded.
 
-The shipped HRP5P configuration starts in `HRP5pRLQPController_Initial` and defines transitions between the initial and RL states. `RLStateRunner` adds state-specific GUI labels, resets the phase and history when an RL state starts, and catches runtime exceptions during the state loop.
+Depending on the controller configuration, the resulting command can either:
 
-!!! tip "Prefer an initial still state"
-    The HRP5P adaptation deliberately starts in a posture-controlled initial state before switching to RL. This limits the discontinuity between robot initialization and the learned controller target.
+- be sent through a `TorqueJointTask`, allowing the QP to enforce constraints;
+- or be sent directly to the robot.
+
+The choice is entirely robot dependent and is configured by each controller adaptation.

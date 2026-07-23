@@ -4,66 +4,15 @@ title: Robot-specific information
 
 # Robot-specific information
 
-## Available variants
+The repositories share policy management, observation assembly, ONNX inference, and action mapping, but their mc_rtc integration differs substantially.
 
-| Variant | Purpose | Status |
+| Variant | Control/state architecture | Main robot-specific additions |
 |---|---|---|
-| [Base template](https://github.com/example/rl-qp-controller-template) | Starting point for a new robot | Generic base |
-| [Unitree H1](https://github.com/example/rl-qp-controller-h1) | H1-specific controller and policies | Robot adaptation |
-| [HRP5P](https://github.com/example/rl-qp-controller-hrp5p) | HRP5P-specific controller and latest architecture | Most recent reference |
+| [Base template](base-template.md) | One RL-running state | Placeholders and `TODO(robot)` adaptation points |
+| [Unitree H1](h1.md) | One RL-running state, torque mode from startup | Tilt anchor callback and H1 observer pipeline |
+| [HRP5P](hrp5p.md) | Position-controlled Initial state, dedicated torque-controlled RL state | Mode switching, posture tasks, contacts, force sensors, high gains, external-force toggling |
 
-## What is reusable
+Start with the [side-by-side comparison](comparison.md) before porting code between variants.
 
-The following modules are intended to transfer across robots with limited changes:
-
-- policy folder discovery and parsing;
-- ONNX Runtime inference wrapper;
-- observation registry and history manager;
-- convention and alias resolution;
-- action-output versus controlled-subset mapping;
-- command and phase handling;
-- common RL FSM lifecycle;
-- policy-selection and gain GUI panels.
-
-## HRP5P-specific integration
-
-The supplied latest implementation additionally contains:
-
-- HRP5P joint groups and aliases in `policies/conventions.yaml`;
-- `pelvis` as the configured base body;
-- HRP5P posture, torque, compliant-posture, and FSM states;
-- left/right foot force sensor names and contact surfaces;
-- Schmitt-trigger contact activation logic;
-- external-force estimator datastore calls;
-- HRP5P high-gain maps;
-- HRP5P-specific logger and GUI prefixes;
-- force/limit monitoring and contact changes.
-
-### Foot-contact logic
-
-The controller reads world-force norms from `LeftFootForceSensor` and `RightFootForceSensor`. Independent Schmitt triggers classify each sensor as active or inactive. When both are active, the controller compares their force difference:
-
-- similar loads produce double support;
-- significantly larger left load produces left-only support;
-- significantly larger right load produces right-only support.
-
-Contacts are added or removed only when the desired state changes.
-
-!!! warning "This contact strategy is not generic"
-    Sensor names, thresholds, surfaces, friction, and the assumption that load difference determines support must be validated for each robot and experiment.
-
-## Before porting
-
-Create an explicit robot inventory:
-
-- reference joint order and single-DoF actuated joints;
-- body and body-sensor names;
-- force sensor names and frames;
-- foot/contact surfaces;
-- available torque interface;
-- encoder and velocity availability;
-- posture task behavior;
-- observer pipeline requirements;
-- joint, velocity, torque, and collision constraints.
-
-Then follow [Adapt to a new robot](../development/adapt-new-robot.md).
+!!! warning "Shared filenames do not imply shared behavior"
+    The policy runtime is broadly reusable, but the main controller, observer pipeline, constraints, state lifecycle, and command interface are robot adaptations.

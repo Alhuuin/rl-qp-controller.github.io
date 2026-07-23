@@ -77,7 +77,7 @@ Robot state ──► ObservationManager ──► ONNX policy ──► action 
 ```
 
 !!! danger "QP bypass is a diagnostic mode"
-    Bypassing the QP can be useful is some cases for testing purposes, but it looses all the safety guarantees brought by the QP. Please refrain from running this controller on the real robot while `use_QP` is false
+    Bypassing the QP can be useful in some cases for testing purposes, but it loses all the safety guarantees brought by the QP. Please refrain from running this controller on the real robot while `use_QP` is false
 
 ## Documentation map
 
