@@ -33,8 +33,6 @@ HRP5pRLQPController_...
 | `_RL_update_count` | Policy update count |
 | `_useQP` | QP state |
 
-HRP5P additionally logs torque-control and contact-constraint state.
-
 ## Per-observation history
 
 ```text
@@ -50,16 +48,3 @@ History entries use `_t`, `_t-1`, and so on. Give repeated terms unique names.
 - **Control:** QP toggle and limit-warning toggle.
 - **Runtime:** controller/policy rates, update count, phase.
 - **Command:** `vx`, `vy`, and `yaw_rate`.
-
-!!! danger "QP toggle is immediate"
-    Protect or remove it where accidental bypass is unacceptable.
-
-## Diagnostic sequence
-
-1. Confirm policy, folder, convention, and observation source.
-2. Read ONNX dimensions and resolved action indices.
-3. Plot observations individually.
-4. Compare action, scale, `q_zero`, and `q_rl`.
-5. Check gains and QP state.
-6. Inspect state-specific mode, contacts, and estimator state.
-7. Investigate solver feasibility last.

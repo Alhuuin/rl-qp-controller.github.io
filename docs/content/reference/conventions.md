@@ -39,17 +39,20 @@ conventions:
       base_orientation:
         sensor: Accelerometer
         scale: 1.0
+        ...
   
-  mjlab:
+  mjlab_exemple:
     joint_groups:
       all: [hip_yaw, hip_roll, hip_pitch, knee, ankle_pitch, ankle_roll]
       legs: [hip_yaw, hip_roll, hip_pitch, knee, ankle_pitch, ankle_roll]
       arms: [shoulder, elbow]
+      ...
     
     type_aliases:
       joint_pos_rel: joint_pos
       joint_vel_rel: joint_vel
       generated_commands: command
+      ...
     
     observation_defaults:
       joint_pos:
@@ -58,6 +61,8 @@ conventions:
       joint_vel:
         joints: all
         relative_to_default_velocity: true
+      ...
+  ...
 ```
 
 ## joint_groups
@@ -84,31 +89,16 @@ conventions:
 
 Training environments often name observations differently from the controller's internal types. `type_aliases` lets you use training names directly in `observations.yaml` without code changes.
 
-For example, if your training environment calls joint positions `joint_pos_rel`:
+For example, if your training environment calls sensor observation `builtin_sensor`:
 
 ```yaml
 type_aliases:
-  joint_pos_rel: joint_pos
+  builtin_sensor: force_sensor
 ```
 
-Then in `observations.yaml`, you can write `type: joint_pos_rel` exactly as in training, and it will resolve to the internal `joint_pos` observation.
+Then in `observations.yaml`, you can write `type: builtin_sensor` exactly as in training, and it will resolve to the internal `force_sensor` observation.
 
 This keeps policy files readable and prevents transcription errors when migrating between environments.
-
-### Available internal types
-
-```text
-joint_pos
-joint_vel
-projected_gravity
-base_ang_vel
-base_lin_vel
-base_orientation
-phase
-last_action
-command
-force_sensor
-```
 
 See [Available observations](observations.md) for details on each type.
 
@@ -154,29 +144,3 @@ conventions:
 3. Local parameters in `observations.yaml` override all of the above
 
 This means a policy's explicit parameters always take precedence.
-
-### Common pitfalls
-
-!!! warning "Defaults are applied silently"
-    If a parameter is not explicitly set in `observations.yaml`, it may come from convention defaults. Always verify the full effective configuration before assuming what parameters are actually in use.
-
-    For example, if `conventions.mjlab.observation_defaults` sets `relative_to_default_pose: true` for `joint_pos`, and your `observations.yaml` omits this parameter, the observation will still be relative — you just won't see it written out.
-
-!!! warning "Reused conventions may not match your setup"
-    When adopting an existing convention, verify all its defaults carefully. Two conventions with similar names may differ in joint order, aliases, or parameter defaults.
-
-## Build it in steps
-
-1. Create the convention name(s) you will reference in `observations.yaml`.
-2. Define `joint_groups` with exact training/export order (at minimum, `all`).
-3. Add `type_aliases` for any training observation names that differ from controller internal names.
-4. Add `observation_defaults` only for parameters that will be consistent across policies using this convention.
-
-## Validation checklist
-
-- [ ] Every `joint_groups` entry order matches training/export order exactly.
-- [ ] The `training_convention` referenced by each policy exists in this file.
-- [ ] All `type_aliases` values are registered internal observation types (see [Available observations](observations.md)).
-- [ ] Every observation name used in `observations.yaml` resolves either directly or through an alias.
-- [ ] `observation_defaults` — both in `conventions.general` and the convention profile — match your training setup.
-- [ ] Convention-specific defaults can be overridden in policy-local `observations.yaml` parameters when needed.

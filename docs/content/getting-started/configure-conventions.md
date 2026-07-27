@@ -44,7 +44,13 @@ Joint groups can be used to specify either the actions joints or the joints to c
     Convention defaults are easy to forget when deploying a new policy against an existing convention.  
     Always check `observation_defaults` — both in `conventions.<name>` and in `conventions.general` — before assuming an observation uses only the parameters written in `observations.yaml`.
 
-
-## Full reference
-
 For complete structure documentation, all configuration options, and validation details, see [Training conventions reference](../reference/conventions.md).
+
+## Validation checklist
+
+- [ ] Every `joint_groups` entry order matches training/export order exactly.
+- [ ] The `training_convention` referenced by each policy exists in this file.
+- [ ] All `type_aliases` values are registered internal observation types (see [Available observations](../reference/observations.md)).
+- [ ] Every observation name used in `observations.yaml` resolves either directly or through an alias.
+- [ ] `observation_defaults` — both in `conventions.general` and the convention profile — match your training setup.
+- [ ] Convention-specific defaults can be overridden in policy-local `observations.yaml` parameters when needed.

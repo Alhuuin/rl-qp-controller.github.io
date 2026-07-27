@@ -102,8 +102,6 @@ Linear component of the body-frame spatial velocity.
 | Size | 3 |
 | Parameters | `sensor` (default `Body`), `scale` |
 
-The same current implementation detail as `base_ang_vel` applies: computation uses `Body` after validating the configured name.
-
 ### `last_action`
 
 The previous raw ONNX action, reordered for the selected joint set.
@@ -120,7 +118,7 @@ The observation searches `policyJointControllerIndices` for each requested contr
 
 ### `command`
 
-The high-level command vector held by `RLPolicyRuntime`.
+The high-level velocity command vector held by `RLPolicyRuntime`.
 
 | Property | Value |
 |---|---|
@@ -128,7 +126,7 @@ The high-level command vector held by `RLPolicyRuntime`.
 | Order | `vx`, `vy`, `yaw_rate` |
 | Parameters | `size`, `scale` |
 
-The HRP5P GUI exposes all three values as editable number inputs.
+The GUI exposes all three values as editable number inputs.
 
 ### `base_orientation`
 
@@ -162,7 +160,7 @@ angle = 2π · (phase_normalized + offset)
 
 With `cos_first: true`, output order is `[cos(angle), sin(angle)]`. With `false`, it is `[sin(angle), cos(angle)]`.
 
-### `force_sensor`
+### `log_force_sensor`
 
 Concatenated force vectors from one or more mc_rtc force sensors.
 
@@ -177,7 +175,14 @@ For each sensor, the world-frame force is transformed component-wise with signed
 sign(f) · log(1 + |f|)
 ```
 
-Torques are not included.
+### `force_sensor`
+
+Concatenated raw force vectors from one or more mc_rtc force sensors.
+
+| Property | Value |
+|---|---|
+| Size | `3 × number_of_sensors` |
+| Parameters | `sensor_names` (required, non-empty) |
 
 ## Registered internal names
 
