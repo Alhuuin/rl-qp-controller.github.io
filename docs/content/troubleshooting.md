@@ -8,7 +8,7 @@ Troubleshoot in layers: discovery and dimensions, then observations and mappings
 
 ## Controller or FSM state is not found
 
-Check the exported controller name in `src/lib.cpp`, selection in `mc_rtc.yaml`, `EXPORT_SINGLE_STATE` names, `src/states/CMakeLists.txt`, and state search paths. A source file may exist without being built. In the supplied HRP5P repository, only `Initial` and `RL` are enabled.
+Check the exported controller name in `src/lib.cpp`, selection in `mc_rtc.yaml`, `EXPORT_SINGLE_STATE` names, `src/states/CMakeLists.txt`, and state search paths. A source file may exist without being built. See your robot-specific configuration for which states are enabled.
 
 ## Policy folder is ignored
 

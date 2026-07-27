@@ -93,9 +93,6 @@ Angular component of the body-frame spatial velocity.
 | Size | 3 |
 | Parameters | `sensor` (default `Body`), `scale` |
 
-!!! info "Current HRP5P implementation detail"
-    Configuration validates the requested `sensor` name, but computation currently reads the body velocity of the literal body name `Body`. Robot adaptations should review this before relying on another configured body name.
-
 ### `base_lin_vel`
 
 Linear component of the body-frame spatial velocity.
@@ -198,6 +195,9 @@ force_sensor
 ```
 
 Unknown internal types fail with an error that also lists all known registry entries.
+
+!!! tip "Unknown observation type"
+    In the case a specific observation type is needed and missing, see [Add an observation](../development/add-observation.md).
 
 ## Dimension validation
 

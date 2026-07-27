@@ -71,4 +71,28 @@ HRP5P retains a `PostureTask`, `CompliantPostureTask`, and `TorqueJointTask`, st
 
 ## Configuration additions
 
-HRP5P enables contact and compound-joint constraints, updates a `FloatingBase` BodySensor including acceleration, uses a force-sensor-based external-force observer with motor torque measurements, and provides `is_initial_posture_rl`, `high_kp`, and `high_kd`.
+HRP5P enables contact and compound-joint constraints, updates a `FloatingBase` BodySensor including acceleration, uses a force-sensor-based external-force observer with motor torque measurements, and provides specialized configuration keys and observer behavior.
+
+### Configuration keys
+
+HRP5P-specific YAML configuration keys:
+
+| Key | Meaning |
+|---|---|
+| `is_initial_posture_rl` | Use active policy `q_zero` as the Initial-state posture target instead of the robot default posture. |
+| `high_kp` | Full high-stiffness proportional-gain map used by HRP5P state logic and gain switching. |
+| `high_kd` | Full high-damping derivative-gain map used by HRP5P state logic and gain switching. |
+
+### Observer differences
+
+HRP5P uses robot-specific observer configurations:
+
+- **Encoder observer**: Requests finite-difference velocity computation
+- **BodySensor observer**: Updates a `FloatingBase` body sensor with acceleration updates enabled
+- **ExternalForcesObserver**: Uses a force-sensor-based method with motor torque measurements and starts in an inactive state
+
+These are not interchangeable defaults and should not be copied to other robot adaptations without careful review.
+
+### Body velocity implementation note
+
+Configuration validates the requested `sensor` name for the `base_ang_vel` observation, but computation currently reads the body velocity of the literal body name `Body`. Robot adaptations considering similar configurations should review this implementation detail before relying on differently-named body frames.

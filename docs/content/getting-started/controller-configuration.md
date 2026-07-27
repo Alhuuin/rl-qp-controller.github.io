@@ -4,9 +4,13 @@ title: Configure the controller
 
 # Configure the controller
 
-This page contains the **minimum controller-level setup** required before loading a policy. Every available option is documented separately in [Controller configuration reference](../reference/controller-options.md).
+If you are using a robot-adapted version of this controller (such as H1 or HRP5P), most of the configuration is already done for you. The controller configuration file is structured like any standard mc_rtc controller, and you likely only need to verify a few RL-specific settings rather than build it from scratch.
 
-## 1. Select the robot state used by observations
+This page covers the core RL policy runtime configuration. Standard mc_rtc settings (FSM states, transitions, etc.) can be added or modified freely; the RL runtime will not interfere with them.
+
+## Essential configuration
+
+### 1. Select the robot state used by observations
 
 ```yaml
 robot:
@@ -14,22 +18,26 @@ robot:
   observation_source: realRobot
 ```
 
-`base_body` is the default body used by floating-base observations. `observation_source` selects either `realRobot` or `robot`.
+| Key | Options | Meaning |
+|---|---|---|
+| `base_body` | robot body name | Default body used by floating-base observations. Should exist on your observation robot. |
+| `observation_source` | `realRobot` or `robot` | Which robot state is used to compute observations. Use `realRobot` for measured hardware state; use `robot` only when the control robot is intentionally the source. |
 
-Use `realRobot` when observations must reflect measured hardware state. Use `robot` only when the control robot is intentionally the source.
-
-## 2. Point to the policy directory
+### 2. Point to the policy directory
 
 ```yaml
 policies_root: "@CMAKE_CURRENT_SOURCE_DIR@/policies"
 default_policy: my_policy
 ```
 
-`policies_root` contains `conventions.yaml` and one subdirectory per policy. `default_policy` must resolve to a discovered policy name.
+| Key | Meaning |
+|---|---|
+| `policies_root` | Directory containing `conventions.yaml` and one subdirectory per policy. All policies under this root are discovered automatically. |
+| `default_policy` | Runtime name of the policy selected on startup. Must match a discovered policy. |
 
-## 3. Configure the minimum observer pipeline
+### 3. Configure the observer pipeline
 
-The selected observation source must provide every signal requested in `observations.yaml`. Joint observations typically need an encoder observer:
+The selected observation source must provide every signal requested in `observations.yaml`. Verify or adjust the observer pipeline as needed:
 
 ```yaml
 ObserverPipelines:
@@ -42,30 +50,19 @@ ObserverPipelines:
         velocity: encoderVelocities
 ```
 
-Add body-sensor, tilt, force, or external-force observers only when the robot and selected observations require them.
+Common observer types include:
 
-## 4. Configure constraints deliberately
+- **Encoder**: Provides joint positions and velocities. Nearly always required.
+- **BodySensor**: Provides body-frame orientation and acceleration from IMU sensors.
+- **Tilt**: Estimates tilt from body accelerations; some robots use this with datastore callbacks.
+- **ExternalForces**: Estimates external torques applied to the robot; implementation varies by robot.
+- **Force**: Provides force-sensor measurements from the robot feet or gripper.
 
-The template contains examples, not universal defaults:
+For robot-specific observer configurations, see the [Robots](../robots/comparison.md) section.
 
-```yaml
-collisions:
-  - type: collision
-    useMinimal: true
+### 4. Set FSM entry point
 
-# constraints:
-#   - type: contact
-#     contactType: acceleration
-#   - type: compoundJoint
-```
-
-Do not copy contact surfaces, force-sensor names, observer callbacks, or compound-joint assumptions from another robot without checking the target robot module.
-
-## 5. Define the FSM entry point
-
-The base template and H1 adaptation use one state that runs the policy immediately. HRP5P starts in a posture-controlled `Initial` state and transitions to a dedicated `RL` state.
-
-A single-state configuration looks like:
+Define your initial FSM state and transitions. The exact structure depends on your robot variant—see the [Robots](../robots/comparison.md) section for examples. A simple entry looks like:
 
 ```yaml
 transitions:
@@ -73,16 +70,25 @@ transitions:
 init: MyController_Initial
 ```
 
-Choose the state architecture before copying transitions. See the [variant comparison](../robots/comparison.md).
+You can add additional FSM states, transitions, and robot-specific state logic as needed. The RL runtime will not interfere.
 
 ## Validation checklist
 
 - [ ] `base_body` exists on the selected observation robot.
-- [ ] `observation_source` provides complete encoders and every requested sensor.
-- [ ] `policies_root` exists at runtime.
-- [ ] `default_policy` matches a discovered policy.
-- [ ] constraints and collisions reference valid robot resources.
-- [ ] the configured initial state is compiled and exported.
-- [ ] the robot command interface supports the control mode used by the controller.
+- [ ] `observation_source` provides complete encoders and every signal required by `observations.yaml`.
+- [ ] `policies_root` directory exists at runtime.
+- [ ] `default_policy` matches a discovered policy name.
+- [ ] The configured initial FSM state is compiled and exported.
+- [ ] The robot command interface supports the control mode used by your selected robot variant.
 
-For all integration settings and variant-specific fields, continue with [Controller configuration reference](../reference/controller-options.md).
+## Behavior implemented in C++, not YAML alone
+
+Different robot adaptations implement varying control logic in C++, such as:
+
+- Runtime mode switching between position and torque control
+- Solver feedback selection based on the active control mode
+- External-force estimator toggling through datastore calls
+- Force-sensor-driven foot-contact management
+- QP enforcement or bypass paths for torque commands
+
+Always inspect the main controller and active FSM states together with the YAML configuration to understand the full control behavior. For robot-specific details, see the [Robots](../robots/comparison.md) section.

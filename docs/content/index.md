@@ -57,9 +57,9 @@ The HRP5P adaptation, including its robot configuration, policies, controller-sp
 At runtime, the controller:
 
 1. searches for policy folders under `policies_root`;
-2. loads `policy.yaml`, `observations.yaml`, and the selected ONNX model;
+2. for the selected policy, loads `policy.yaml`, `observations.yaml` and ONNX model;
 3. resolves training-environment aliases and joint ordering through `conventions.yaml`;
-4. constructs the policy input, including per-observation history;
+4. constructs the policy input according to the observations configuration;
 5. runs ONNX inference at the configured policy period;
 6. maps and scales the action into controller joint order;
 7. produces a target posture and PD torque command;
@@ -76,14 +76,14 @@ Robot state ──► ObservationManager ──► ONNX policy ──► action 
                               TorqueJointTask + QP                     direct torque path
 ```
 
-!!! danger "QP bypass is a diagnostic mode"
-    Bypassing the QP can be useful in some cases for testing purposes, but it loses all the safety guarantees brought by the QP. Please refrain from running this controller on the real robot while `use_QP` is false
+
+!!! danger "QP bypass"
+    Bypassing the QP can be useful in some cases for testing purposes, but it loses all safety guarantees. Please refrain from running this controller on the real robot while `use_QP` is false
 
 ## Documentation map
 
-- **Getting started** explains the policy folder format and controller configuration.
-- **Architecture** follows the code from configuration loading to action application.
-- **Observations** documents every registered observation type and its parameters.
-- **Logging and GUI** lists the actual logger entries, console messages, and runtime controls.
-- **Development** explains how to add observations or adapt the template to another robot.
-- **Robot-specific information** gives any relevant information relative to existing robot-specific versions.
+- **Getting started** walks you through the basics: general information, configuring conventions, setting up the controller, and deploying your first policy.
+- **Reference** documents the full system architecture, available controllers and policies, observation types, and logging outputs.
+- **Development** explains how to add custom observations and adapt the template to a new robot.
+- **Robots** provides comparisons and robot-specific documentation for available implementations (base template, H1, HRP5P).
+- **Troubleshooting** covers common issues and solutions.

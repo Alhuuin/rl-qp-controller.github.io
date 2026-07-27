@@ -14,21 +14,19 @@ nav:
   - Overview: index.md
   - Getting started:
       - General information: getting-started/general-information.md
+      - Configure the controller: getting-started/controller-configuration.md
       - Configure conventions.yaml: getting-started/configure-conventions.md
       - Deploy a policy: getting-started/deploy-policy.md
-      - Configure the controller: getting-started/controller-configuration.md
   - Reference:
       - Architecture: reference/architecture.md
-      - Available observations: reference/observations.md
-      - Policy options: reference/policy-options.md
-      - Controller configuration options: reference/controller-options.md
       - Training conventions: reference/conventions.md
+      - Available observations: reference/observations.md
+      - Available policy options: reference/policy-options.md
       - Logging: reference/logging.md
   - Development:
       - Add an observation: development/add-observation.md
       - Adapt to a new robot: development/adapt-new-robot.md
   - Robot-specific information:
-      - Overview: robots/index.md
       - Variant comparison: robots/comparison.md
       - Base template: robots/base-template.md
       - Unitree H1: robots/h1.md
@@ -113,7 +111,11 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.saneheaders
   - pymdownx.smartsymbols
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tabbed:
       alternate_style: true
   - pymdownx.tasklist:
