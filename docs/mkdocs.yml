@@ -20,8 +20,8 @@ nav:
   - Reference:
       - Architecture: reference/architecture.md
       - Training conventions: reference/conventions.md
-      - Available observations: reference/observations.md
       - Available policy options: reference/policy-options.md
+      - Available observations: reference/observations.md
       - Logging: reference/logging.md
   - Development:
       - Add an observation: development/add-observation.md

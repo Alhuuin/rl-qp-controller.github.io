@@ -38,7 +38,7 @@ The repository marks adaptation points with `TODO(robot)` and `TODO(policy)`. Ty
 - `minimalExample` shows the smallest configuration accepted by the current parser.
 - `fullExample` documents every currently accepted policy and observation field.
 
-The placeholder joints and missing ONNX models are intentional. The examples document format, not a runnable robot.
+The placeholder joints and zero-byte placeholder ONNX files are intentional. The examples document configuration format, not a runnable robot.
 
 ## Not provided generically
 

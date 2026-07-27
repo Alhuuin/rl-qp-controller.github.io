@@ -2,8 +2,6 @@
 title: Adapt to a new robot
 ---
 
-- Adjust and tune Observers oc
-
 # Adapt to a new robot
 
 Start from the base template. Use H1 and HRP5P as examples of different adaptation strategies, not as layers that must both be reproduced.

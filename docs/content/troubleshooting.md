@@ -99,4 +99,4 @@ Move high-frequency vectors to mc_rtc logger entries and guard development dumps
 
 ## Template examples do not run
 
-They intentionally contain placeholder joints and may omit ONNX files. Replace joint groups, gains, `q0`, bodies/sensors, model file, and robot integration.
+They intentionally contain placeholder joints and zero-byte placeholder ONNX files. Replace joint groups, gains, `q0`, bodies/sensors, model file, and robot integration.

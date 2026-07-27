@@ -77,7 +77,7 @@ Robot state ──► ObservationManager ──► ONNX policy ──► action 
 ```
 
 
-!!! danger "QP bypass"
+!!! warning "QP bypass"
     Bypassing the QP can be useful in some cases for testing purposes, but it loses all safety guarantees. Please refrain from running this controller on the real robot while `use_QP` is false
 
 ## Documentation map
