@@ -4,22 +4,9 @@ title: Deploy a policy
 
 # Deploy a policy
 
-<div class="quick-path" markdown>
-Deploy in this order: `conventions.yaml` -> `policy.yaml` -> `observations.yaml`.
-This avoids most ordering/alias mismatches.
-</div>
-
 ## 1. Prepare conventions first
 
-Before filling policy files, ensure your training convention exists and is correct.
-
-- It defines joint order for actions and joint-based observations.
-- It defines aliases and optional defaults for observation entries.
-
-See [Configure conventions.yaml](configure-conventions.md) for the full template and checks.
-
-!!! warning "Reused conventions may not match your setup"
-    Always verify aliases and defaults when reusing an existing convention.
+Before filling policy files, ensure your training convention exists and is correct. See [Configure the conventions](./configure-conventions.md).
 
 ## 2. Create the policy folder
 
@@ -61,7 +48,7 @@ control:
     jointName3: 10.0
 ```
 
-Adjust `kp` and `kd` to cover all controller joints. For all available options, see [Policy options reference](../reference/policy-options.md).
+Adjust `kp` and `kd` to cover all controller joints, and adjust parameters to fit the expected handling of the policy. For all available options, see [Policy options reference](../reference/policy-options.md).
 
 ## 4. Fill observations.yaml (training input)
 
@@ -87,8 +74,8 @@ observations:
       history: 1
 ```
 
-!!! danger "Must match training exactly"
-    The observation order, joint order, scales, and history lengths must exactly match your training configuration. Mismatches produce silent failures.
+!!! info "Must match training exactly"
+    The observation order, joint order, scales, and history lengths must exactly match your training configuration.
 
 !!! warning "Convention defaults matter"
     Check `observation_defaults` in both `conventions.general` and your selected convention profile. Defaults are merged into each observation before your local parameters, so omitting a parameter does not mean it is absent.
@@ -113,9 +100,9 @@ To avoid potential issues, use the following checklist before testing your polic
 
 - [ ] Check the size of the input and output of the policy. Use the provided `inspect_policy` script if needed
 - [ ] The ONNX input size must equal the concatenated observation size.
-- [ ] The selected `training_convention` exists in `conventions.yaml` and its aliases/defaults are the ones you expect.
+- [ ] The ONNX output size must equal the size of the specified `action.joints`.
+- [ ] The selected `training_convention` exists in `conventions.yaml` and its aliases/defaults are the ones expected.
 - [ ] Convention joint groups match the training order exactly.
-- [ ] The ONNX output size equals the resolved `action.joints` size.
 - [ ] History order matches training.
 - [ ] `kp`, `kd`, and optional `q0` cover all controller joints.
 - [ ] The selected observation source contains valid encoders and sensors for the chosen robot.

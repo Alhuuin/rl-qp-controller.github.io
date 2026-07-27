@@ -15,7 +15,7 @@ nav:
   - Getting started:
       - General information: getting-started/general-information.md
       - Configure the controller: getting-started/controller-configuration.md
-      - Configure conventions.yaml: getting-started/configure-conventions.md
+      - Configure the conventions: getting-started/configure-conventions.md
       - Deploy a policy: getting-started/deploy-policy.md
   - Reference:
       - Architecture: reference/architecture.md

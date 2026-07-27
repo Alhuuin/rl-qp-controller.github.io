@@ -4,14 +4,13 @@ title: Configure conventions.yaml
 
 # Configure conventions.yaml
 
-<div class="quick-path" markdown>
-Configure `conventions.yaml` before `policy.yaml` and `observations.yaml`.
-It defines the joint ordering and optional aliases used to interpret both policy actions and observations.
-</div>
+This file defines training-environment conventions (joint groups and order, eventual type aliases and default observation parameters). This enables the use of policies trained in different conditions in the same environment.
+
+It should be checked and configured if informations are missing, before the `policy.yaml` and `observations.yaml` of a new policy.
 
 ## Location
 
-In this project structure, conventions are typically defined in `policies/conventions.yaml`:
+In this project structure, conventions are typically defined in `<policy_root>/conventions.yaml`:
 
 ```text
 policies/
@@ -28,24 +27,22 @@ policies/
 conventions:
   my_convention:
     joint_groups:
-      all: [hip_yaw, hip_roll, hip_pitch, knee, ankle_pitch, ankle_roll]
+      all: [hip_yaw, hip_roll, hip_pitch, knee, ankle_pitch, ankle_roll, ...]
       legs: [hip_yaw, hip_roll, hip_pitch, knee, ankle_pitch, ankle_roll]
 ```
 
 This is the minimum required: one convention name, at least one joint group (typically `all`), with joint order matching your training exactly.
 
-## What to do next
+Joint groups can be used to specify either the actions joints or the joints to consider for a specific observation.
 
-- **`joint_groups`**: List the exact joint order from your training environment. The order must match precisely.
-- **`type_aliases`** (optional): Map training-environment observation names to controller observation types. See [conventions reference](../reference/conventions.md#type_aliases).
-- **`observation_defaults`** (optional): Set default parameters for observations to avoid repetition in `observations.yaml`. See [conventions reference](../reference/conventions.md#observation_defaults).
+## Optional
+
+- **`type_aliases`** : to make the integration seamless, it is possible to map the names of the observations as the controllers knows them to the name they had in the training environment. Mostly useful for conventions that will be heavily used. See [type aliases](../reference/conventions.md#type_aliases) for more informations.
+- **`observation_defaults`** : Set default parameters for observations to avoid repetition in `observations.yaml`. See [observation defaults](../reference/conventions.md#observation_defaults) for more informations.
 
 !!! warning "Defaults can produce unexpected behavior if overlooked"
-    Convention defaults are easy to forget when deploying a new policy against an existing
- convention.
-    Always check `observation_defaults` — both in `conventions.<name>` and in `conventions
-.general` — before assuming an observation uses only the parameters written in `observation
-s.yaml`.
+    Convention defaults are easy to forget when deploying a new policy against an existing convention.  
+    Always check `observation_defaults` — both in `conventions.<name>` and in `conventions.general` — before assuming an observation uses only the parameters written in `observations.yaml`.
 
 
 ## Full reference
