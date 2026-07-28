@@ -4,82 +4,65 @@ title: Adapt to a new robot
 
 # Adapt to a new robot
 
-Start from the base template. Use H1 and HRP5P as examples of different adaptation strategies, not as layers that must both be reproduced.
+Start from the base template, then apply the robot-specific changes below.
+Existing robot variants are useful references when you need examples of different adaptation strategies.
 
-## 1. Inventory the robot interface
+## 1. Create a new fork
 
-Record the robot module, `refJointOrder()`, actuated joint types, torque and position interfaces, runtime mode-switch capability, encoder sources, base/body sensors, force sensors, surfaces, limits, collision model, and available observer/datastore APIs.
+Fork the template repository and name it after the new robot.
 
-## 2. Choose the state architecture
+Example: `robotname_rl_qp_controller`
 
-### Direct RL startup
+## 2. Rename exported integration points
 
-Template/H1 pattern:
-
-```text
-startup -> torque control -> RL-running state
-```
-
-### Stable Initial state
-
-HRP5P pattern:
-
-```text
-startup -> position posture -> explicit transition -> torque RL
-```
-
-The second pattern requires coordinated task handoff, command-mode switching, solver feedback selection, and state teardown. It cannot be added through YAML alone.
-
-## 3. Rename exported integration points
-
-Rename the controller class/files, exported constructor, state classes and export names, CMake targets, configuration file, GUI/logger prefixes, and test selection.
-
-## 4. Define canonical order and conventions
-
-The runtime stores full vectors in `robot().refJointOrder()` order. Verify policy gains cover required joints, action groups reproduce ONNX output order, controlled joints form a subset, observation groups match training, and fixed/multi-DoF/finger joints are handled intentionally.
-
-## 5. Review every main-controller function
-
-- constructor: tasks, weights, constraints, solver setup;
-- `run()`: feedback mode, QP failure, direct bypass;
-- `initializeRobotBasics()`: control mode, joint order, datastore callbacks;
-- `byPassQPControl()`: command destination and measured state;
-- `computeLimits()`: control robot versus real robot;
-- robot helpers: contact anchors, estimator toggles, contact updates;
-- GUI and logging.
-
-See [Variant comparison](../robots/comparison.md).
-
-## 6. Build observers from observation requirements
-
-For every observation identify whether it needs encoders, velocities, multibody state, body sensors, force sensors, command, phase, or previous action. Configure only observers that provide those signals.
-
-## 7. Configure constraints and contacts
-
-Validate collision pairs, surfaces, friction, contact type, compound joints, CBF gains, damping/interaction distances, velocity percentages, and whether contacts are static, state-driven, or force-driven.
-
-## 8. Adapt policies
-
-Replace placeholder joints, gains, default pose, bodies, sensors, and ONNX files. Keep `minimalExample` and `fullExample` as format references or preserve equivalent documentation elsewhere.
-
-## 9. Validate progressively
-
-1. Build and load controller/state libraries.
-2. Verify joint order, bodies, sensors, and observer output.
-3. Load ONNX and validate dimensions.
-4. Plot each observation.
-5. Check action, scale, `q_zero`, and `q_rl`.
-6. Test tasks and QP in simulation.
-7. Test state transitions separately from policy behavior.
-8. Use direct torque bypass only diagnostically.
-9. Move to hardware after validating command and safety interfaces.
-
-## Final review search
+Rename all integration points consistently: controller class/files, exported constructor, state classes and export names, CMake targets, configuration file, GUI/logger prefixes, and test selection.
 
 ```bash
-grep -RIn "TODO(robot)\|TODO(policy)" .
-grep -RIn "H1\|HRP5\|pelvis\|FloatingBase\|LeftFoot\|RightFoot" \
-  src include etc policies
+sed -i -e's/NewRLQPController/RobotNameRLQPController/g' `find . -not -path '*/.*' -type f`
+git mv src/NewRLQPController.cpp src/RobotNameRLQPController.cpp
+git mv src/NewRLQPController.h src/RobotNameRLQPController.h
+git mv src/states/NewRLQPController_Initial.cpp src/states/RobotNameRLQPController_Initial.cpp
+git mv src/states/NewRLQPController_Initial.h src/states/RobotNameRLQPController_Initial.h
+git mv etc/NewRLQPController.in.yaml etc/RobotNameRLQPController.in.yaml
+```
+
+You can also customize the project name in `vcpkg.json`, following the [vcpkg manifest rules](https://github.com/microsoft/vcpkg/blob/master/docs/users/manifests.md).
+
+## 3. Complete required robot adaptations
+
+The required robot-specific changes are tagged as `//TODO(robot)` in the codebase.
+Use the command below to track what is still pending:
+
+```bash
+grep -rn "TODO(robot)" .
 ```
 
 Every remaining robot-specific name must be intentional.
+
+Apply the following modifications :
+
+### 3.1 In the controller configuration file
+
+- Adjust the body used by the floating-based observations.
+
+- Adjust the `ObserverPipeline` depending on the observations' needs.
+
+### 3.2 In the controller's header
+
+- Tune the CBF gains.
+
+### 3.3 In the controller's source file
+
+- Review selected constraints.
+
+- Tune stiffness and weight for the used `mc_task`.
+
+- Validate contact/constraint consistency (surfaces, friction, collision pairs, and contact behavior expected by your states).
+
+### 3.4 In `conventions.yaml`
+
+- Replace placeholder joint names and add your own convention(s).
+
+- Ensure the convention order is exactly the one the policy is waiting for, since runtime vectors and policy-related mappings depend on it.
+
+You should now be able to add your own policies and configure their observations. If any observation is missing by default, please refer to [Add an observation](./add-observation.md).

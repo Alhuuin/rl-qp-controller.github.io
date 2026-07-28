@@ -11,7 +11,7 @@ The observation framework separates configuration, implementation, and registrat
 Add a subclass to `include/observation/Observations.h`.
 
 ```cpp
-/** @brief Describe the quantity, frame, ordering, and units. */
+/** @brief Describe the quantity, frame, ordering, any relevant information. */
 class MyObservation : public Observation
 {
 public:
@@ -27,7 +27,7 @@ private:
 };
 ```
 
-`configure()` should resolve parameters and validate robot resources once. `compute()` should perform only the per-cycle computation.
+`configure()` should resolve parameters and validate robot resources. `compute()` should perform only the per-cycle computation.
 
 ## 2. Implement it
 
@@ -61,9 +61,7 @@ It can then be used directly:
   parameters: { ... }
 ```
 
-## 4. Add optional aliases
-
-Use `conventions.yaml` when a training environment calls the same concept by another name or requires default parameters:
+## 4. Add optional aliases or default parameters
 
 ```yaml
 type_aliases:
@@ -73,14 +71,3 @@ default_parameters:
   training_name:
     scale: 0.5
 ```
-
-## 5. Test history and logging
-
-Test at least:
-
-- one sample and multiple history samples;
-- oldest-first and newest-first concatenation;
-- scalar and vector scales;
-- repeated instances with distinct `name` values;
-- final dimension against an ONNX model;
-- logger suffixes `_t`, `_t-1`, and so on.
