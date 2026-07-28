@@ -5,12 +5,10 @@ The RL QP Controller loads reinforcement-learning policies, prepares their obser
 
 ## Controller design
 
-This controller is modular by design and keeps two logic layers separated:
+The project has two practical layers:
 
-- Usual mc_rtc controller/FSM logic: main controller integration, tasks, constraints, observers, states, and transitions.
-- RL policy runtime logic: policy loading, convention resolution, observation assembly, ONNX inference, and action mapping/scaling.
-
-In practice, the RL layer plugs into the mc_rtc layer instead of the two being intertwined. This makes the codebase easier to adapt to new robots: reuse the RL policy pipeline while rebuilding only the robot-specific controller/FSM integration.
+- mc_rtc integration: controller/FSM, tasks, constraints, observers, states, transitions;
+- policy runtime: policy loading, convention resolution, observation assembly, ONNX inference, action mapping.
 
 ## Configuration files
 

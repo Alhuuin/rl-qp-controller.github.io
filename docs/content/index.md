@@ -46,8 +46,9 @@ The H1 adaptation, including its robot configuration, policies, and controller-s
 ### :material-robot: HRP5P
 
 The HRP5P adaptation, including its robot configuration, policies, controller-specific integration, and FSM states.
+This adaptation is currently closed-source.
 
-[Open HRP5P repository](https://github.com/example/rl-qp-controller-hrp5p){ .md-button }
+[HRP5P repository (closed-source)](https://github.com/example/rl-qp-controller-hrp5p){ .md-button }
 </div>
 
 </div>
@@ -63,7 +64,7 @@ At runtime, the controller:
 5. runs ONNX inference at the configured policy period;
 6. maps and scales the action into controller joint order;
 7. produces a target posture and PD torque command;
-8. either sends that torque through the QP task or bypasses the QP, depending on `use_QP`.
+8. applies torque through the configured control path (`use_QP`).
 
 ```text
 Robot state ──► ObservationManager ──► ONNX policy ──► action mapping
@@ -76,9 +77,6 @@ Robot state ──► ObservationManager ──► ONNX policy ──► action 
                               TorqueJointTask + QP                     direct torque path
 ```
 
-
-!!! warning "QP bypass"
-    Bypassing the QP can be useful in some cases for testing purposes, but it loses all safety guarantees. Please refrain from running this controller on the real robot while `use_QP` is false
 
 ## Documentation map
 

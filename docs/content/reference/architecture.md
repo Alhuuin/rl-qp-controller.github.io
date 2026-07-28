@@ -4,7 +4,7 @@ title: Architecture
 
 # Architecture
 
-The controller separates the mc_rtc integration from the policy-dependent runtime code, while keeping the pieces that must access robot state connected through `NewRLQPController`.
+The controller keeps mc_rtc integration and policy runtime as separate layers, connected through `NewRLQPController`.
 
 At the top level, the template contains:
 
@@ -64,6 +64,8 @@ new-rl-qp-controller/
 └── ext/onnxruntime
 ```
 
+`ext/onnxruntime` is included as a project submodule in this repository. No separate system installation of ONNX Runtime is required for this project.
+
 ## Main objects and ownership
 
 The actual ownership relationships in the template are:
@@ -89,7 +91,7 @@ NewRLQPController
         └── ONNX Runtime session
 ```
 
-The runtime is generic with respect to a particular robot model, but it is not isolated from mc_rtc: it receives `NewRLQPController` when it needs the controller joint order, the selected robot state, the posture task, or the `TorqueJointTask`.
+`RLPolicyRuntime` accesses controller-owned data through `NewRLQPController` when needed (joint order, selected robot state, posture task, `TorqueJointTask`).
 
 ## Main components
 
@@ -106,7 +108,6 @@ In the base template it:
 - initializes the policy runtime;
 - exposes GUI and logging entries;
 - runs the FSM controller with `ClosedLoopIntegrateReal` feedback;
-- optionally bypasses the QP and writes the RL PD torques directly to `robot().mbc().jointTorque`;
 - reports measured position, velocity, and torque limit violations.
 
 Robot-specific adaptations can change these responsibilities when the target robot requires different tasks, constraints, observers, contacts, or mode-switching logic.
@@ -185,6 +186,8 @@ At runtime it computes each observation, updates its history buffer, and concate
 - the active observation convention.
 
 `ObservationConvention` loads convention-specific joint groups, aliases, and default observation parameters from `policies/conventions.yaml`.
+
+For full convention semantics and merge order, see [Training conventions](conventions.md).
 
 ### RLPolicyInterface
 
@@ -295,16 +298,12 @@ When `action.q0` is absent, the runtime reads the controller's FSM posture task 
 
 ## QP and direct-torque paths
 
-The policy always produces a position target `q_rl`.
+The policy produces a position target `q_rl`. In the base template, the active state sends it to `TorqueJointTask` every cycle.
 
-In the base template, the active state sends this target to `TorqueJointTask` every controller cycle. The runtime also applies the policy gains to that task when a policy is loaded or the gain ratio changes.
-
-When QP control is enabled, the `TorqueJointTask` remains part of the mc_rtc solver together with the configured dynamics and self-collision constraints.
-
-When QP control is bypassed, `NewRLQPController::byPassQPControl()` computes, for every controller joint:
+If QP is bypassed (`use_QP: false`), `NewRLQPController::byPassQPControl()` computes, for each controller joint:
 
 ```text
 tau = kp * (q_rl - q) - kd * q_dot
 ```
 
-and writes the result directly to `robot().mbc().jointTorque` after the normal controller run.
+and writes torques directly to `robot().mbc().jointTorque`.

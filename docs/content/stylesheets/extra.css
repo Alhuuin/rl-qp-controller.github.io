@@ -112,6 +112,87 @@
   flex: 1;
 }
 
+.controller-search-mount {
+  display: none;
+}
+
+.controller-sidebar-search {
+  padding: .65rem .7rem .55rem;
+  border-bottom: 1px solid color-mix(in srgb, white 20%, transparent);
+  background: color-mix(in srgb, var(--controller-navy) 16%, transparent);
+}
+
+.controller-sidebar-search .md-search {
+  display: block !important;
+  max-width: none;
+  position: relative;
+  width: 100%;
+}
+
+.controller-sidebar-search .md-search__inner {
+  position: static;
+  width: 100%;
+}
+
+.controller-sidebar-search .md-search__form {
+  display: block;
+  width: 100%;
+  background: rgba(255, 255, 255, .14);
+}
+
+.controller-sidebar-search .md-search__input {
+  color: white;
+  width: 100%;
+}
+
+.controller-sidebar-search .md-search__input::placeholder {
+  color: rgba(255, 255, 255, .78);
+}
+
+.controller-sidebar-search .md-search__icon {
+  color: rgba(255, 255, 255, .88);
+}
+
+.controller-sidebar-search .md-search__output {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 20;
+}
+
+.controller-header__toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border: 0;
+  border-radius: 50%;
+  color: white;
+  background: rgba(255, 255, 255, .12);
+  cursor: pointer;
+  transition: background-color .16s ease, transform .16s ease;
+}
+
+.controller-header__toggle svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  fill: currentcolor;
+}
+
+.controller-header__toggle:hover {
+  background: rgba(255, 255, 255, .2);
+}
+
+.controller-header--showcase-open .controller-header__toggle {
+  transform: rotate(180deg);
+}
+
+.controller-header .md-search {
+  color: white;
+}
+
 .controller-header__showcase {
   max-height: 15.5rem;
   opacity: 1;
@@ -194,6 +275,20 @@
   transform: translateY(-.75rem);
 }
 
+.controller-header--inner .controller-header__showcase {
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-.75rem);
+}
+
+.controller-header--inner.controller-header--showcase-open .controller-header__showcase {
+  max-height: 15.5rem;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
 /* Explicit page-date labels ------------------------------------------------ */
 .md-source-file {
   display: flex;
@@ -231,6 +326,14 @@
   .controller-header-link {
     min-width: auto;
     padding: .48rem .72rem;
+  }
+
+  .controller-header .md-search {
+    width: auto;
+  }
+
+  .controller-sidebar-search {
+    padding: .5rem .55rem;
   }
 }
 
