@@ -26,11 +26,7 @@ nav:
   - Development:
       - Add an observation: development/add-observation.md
       - Adapt to a new robot: development/adapt-new-robot.md
-  - Robot-specific information:
-      - Variant comparison: robots/comparison.md
-      - Base template: robots/base-template.md
-      - Unitree H1: robots/h1.md
-      - HRP5P: robots/hrp5p.md
+      - Adaptation advice: development/adaptation-advice.md
   - Troubleshooting: troubleshooting.md
 
 theme:

@@ -81,4 +81,4 @@ Different robot adaptations implement varying control logic in C++, such as:
 - Force-sensor-driven foot-contact management
 - QP enforcement or bypass paths for torque commands
 
-Inspect the main controller and active FSM states together with the YAML configuration to understand the full control behavior. For robot-specific details, see the [Robots-specific information](../robots/) section.
+Inspect the main controller and active FSM states together with the YAML configuration to understand the full control behavior. For context-based guidance, see [Adaptation advice](../development/adaptation-advice.md).

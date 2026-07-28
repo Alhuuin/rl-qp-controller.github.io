@@ -13,7 +13,7 @@ At the top level, the template contains:
 - the **observation implementations** and their registry;
 - the **policy folders and training conventions**.
 
-# Project structure
+## Project structure
 
 The source tree of the base template is organized as follows:
 
@@ -64,7 +64,7 @@ new-rl-qp-controller/
 └── ext/onnxruntime
 ```
 
-# Main objects and ownership
+## Main objects and ownership
 
 The actual ownership relationships in the template are:
 
@@ -91,9 +91,9 @@ NewRLQPController
 
 The runtime is generic with respect to a particular robot model, but it is not isolated from mc_rtc: it receives `NewRLQPController` when it needs the controller joint order, the selected robot state, the posture task, or the `TorqueJointTask`.
 
-# Main components
+## Main components
 
-## NewRLQPController
+### NewRLQPController
 
 `NewRLQPController` is the mc_rtc controller implementation.
 
@@ -111,7 +111,7 @@ In the base template it:
 
 Robot-specific adaptations can change these responsibilities when the target robot requires different tasks, constraints, observers, contacts, or mode-switching logic.
 
-## PolicyManager and PolicyConfig
+### PolicyManager and PolicyConfig
 
 `PolicyManager` is declared alongside `PolicyConfig` in `PolicyConfig.h` and is owned by `RLPolicyRuntime`.
 
@@ -128,7 +128,7 @@ It:
 
 The ONNX model itself is loaded later by `RLPolicyInterface` when the selected policy is activated.
 
-## RLPolicyRuntime
+### RLPolicyRuntime
 
 `RLPolicyRuntime` owns the active policy session.
 
@@ -148,7 +148,7 @@ It is responsible for:
 
 Full-size runtime vectors such as gains, `q_zero`, `q_rl`, and action scaling are stored in controller joint order.
 
-## ObservationRegistry
+### ObservationRegistry
 
 `ObservationRegistry` maps an internal observation type name to the factory that creates the corresponding `Observation` subclass.
 
@@ -156,7 +156,7 @@ The runtime initializes it with `makeDefaultObservationRegistry()`. `Observation
 
 This is the extension point used when adding a new built-in observation implementation.
 
-## ObservationManager
+### ObservationManager
 
 `ObservationManager` owns the active list of observation objects and their history buffers.
 
@@ -170,7 +170,7 @@ When a policy is loaded, it:
 
 At runtime it computes each observation, updates its history buffer, and concatenates the histories in appropriate order into the vector passed to the ONNX policy.
 
-## ObservationContext and ObservationConvention
+### ObservationContext and ObservationConvention
 
 `ObservationContext` is the data view passed to observation implementations. It contains:
 
@@ -186,7 +186,7 @@ At runtime it computes each observation, updates its history buffer, and concate
 
 `ObservationConvention` loads convention-specific joint groups, aliases, and default observation parameters from `policies/conventions.yaml`.
 
-## RLPolicyInterface
+### RLPolicyInterface
 
 `RLPolicyInterface` is the ONNX Runtime wrapper.
 
@@ -200,7 +200,7 @@ It:
 
 It does not build observations or map the returned action to robot joints; those responsibilities remain in `RLPolicyRuntime`.
 
-## RLStateRunner
+### RLStateRunner
 
 `RLStateRunner` contains the policy-running logic shared by RL FSM states.
 
@@ -214,7 +214,7 @@ Its `run()` method calls `RLPolicyRuntime::runPolicyStepIfNeeded()` and catches 
 
 The FSM state remains responsible for deciding how the runtime output is applied to the controller tasks.
 
-# Base-template FSM state
+## Base-template FSM state
 
 The base template currently builds one state:
 
@@ -224,7 +224,7 @@ NewRLQPController_Initial
 
 Despite the historical name, it is already the RL-running state. It has the behavior previously described
 
-# Runtime sequence
+## Runtime sequence
 
 The controller and the policy do not necessarily run at the same frequency.
 
@@ -249,7 +249,7 @@ NewRLQPController_Initial::run()
 
 Between policy updates, `q_rl` remains unchanged and the state keeps assigning the existing target to the `TorqueJointTask` every controller cycle.
 
-# Policy execution and action mapping
+## Policy execution and action mapping
 
 The ONNX output order is defined by `action.joints` in the policy's `policy.yaml`. The runtime resolves that selector through the active convention.
 
@@ -275,7 +275,7 @@ q_rl[joint] = q_zero[joint] + scaled_action[joint]
 
 Consequently, controller joints that are not selected remain at their `q_zero` target.
 
-# Observation source
+## Observation source
 
 The controller configuration selects which mc_rtc robot object is passed to the observation pipeline.
 
@@ -283,7 +283,7 @@ The selected object is stored in `ObservationContext::observationRobot` and is u
 
 ---
 
-# Default pose
+## Default pose
 
 `q_zero` is stored in controller joint order and is used as the reference posture for `q_rl`.
 
@@ -293,7 +293,7 @@ When `action.q0` is absent, the runtime reads the controller's FSM posture task 
 
 ---
 
-# QP and direct-torque paths
+## QP and direct-torque paths
 
 The policy always produces a position target `q_rl`.
 

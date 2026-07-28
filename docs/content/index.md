@@ -22,7 +22,7 @@ title: RL QP Controller
 
 ## Project variants
 
-The project is maintained as a reusable base and as robot-specific adaptations. Here are the currently available versions :
+The project is maintained as a reusable base with adaptation repositories. Here are the currently available versions:
 
 <div class="repo-grid" markdown>
 
@@ -84,6 +84,5 @@ Robot state ──► ObservationManager ──► ONNX policy ──► action 
 
 - **Getting started** walks you through the basics: general information, configuring conventions, setting up the controller, and deploying your first policy.
 - **Reference** documents the full system architecture, available controllers and policies, observation types, and logging outputs.
-- **Development** explains how to add custom observations and adapt the template to a new robot.
-- **Robots** provides comparisons and robot-specific documentation for available implementations (base template, H1, HRP5P).
+- **Development** explains how to add custom observations, adapt the template to a new robot, and apply context-based integration advice.
 - **Troubleshooting** covers common issues and solutions.
