@@ -3,9 +3,9 @@
 site_name: RL QP Controller
 site_description: Deploy ONNX reinforcement-learning policies through an mc_rtc controller with optional QP constraint enforcement.
 site_author: RL QP Controller contributors
-site_url: https://example.github.io/rl-qp-controller/
-repo_url: https://github.com/example/rl-qp-controller
-repo_name: GitHub
+site_url: https://alhuuin.github.io/rl-qp-controller.github.io/
+repo_url: https://github.com/bastien-muraccioli/new-rl-qp-controller
+repo_name: new-rl-qp-controller
 edit_uri: edit/main/docs/content/
 
 docs_dir: content/
@@ -70,21 +70,21 @@ extra_css:
 extra:
   controller_tagline: A reusable mc_rtc architecture for deploying reinforcement-learning policies with optional QP constraint enforcement.
   repositories:
-    template: https://github.com/example/rl-qp-controller-template
-    h1: https://github.com/example/rl-qp-controller-h1
-    hrp5p: https://github.com/example/rl-qp-controller-hrp5p
+    template: https://github.com/bastien-muraccioli/new-rl-qp-controller
+    h1: https://github.com/Alhuuin/h1_rl_qp_controller
+    hrp5p: https://github.com/bastien-muraccioli/hrp5p_rl_qp_controller
   header_links:
     - name: Code
-      url: https://github.com/example/rl-qp-controller
+      url: https://github.com/bastien-muraccioli/new-rl-qp-controller
     - name: Paper
-      url: https://example.org/paper
+      url: https://safe-rl-qp.github.io/
     - name: Ecosystem
-      url: https://example.org/ecosystem
+      url: https://github.com/safe-rl-qp/awesome-safe-rl-qp
   footer_links:
     - name: GitHub
-      url: https://github.com/example/rl-qp-controller
+      url: https://github.com/bastien-muraccioli/new-rl-qp-controller
     - name: Paper
-      url: https://example.org/paper
+      url: https://arxiv.org/abs/2607.14488
 
 markdown_extensions:
   - abbr
