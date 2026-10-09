@@ -12,6 +12,10 @@ It can define:
 - named joint subsets used by observations and actions;
 - aliases between training-environment observation names and registered controller observation types.
 
+!!! tip "Optional ?"
+
+    
+
 Set the convention in `observations.yaml`:
 
 ```yaml
@@ -22,23 +26,7 @@ A convention changes representation, not semantics. Always compare it with the a
 
 ## Is a convention required? { #is-a-convention-required }
 
-Partially — it depends on which field you're filling in.
-
-- **`training_convention` in `observations.yaml` is always required**, and must resolve to a convention entry here — even a minimal one.
-- **`action.joints` and `action.controlled_joints` in `policy.yaml` must be the *name* of a `joint_groups` entry.** There's no inline alternative: the parser reads them as a plain string, not a list, so at minimum your convention needs one named group for the controller's full actuated joint set (typically called `all`).
-- **Every per-observation `joints` parameter in `observations.yaml`, by contrast, is optional to route through a named group.** The resolver tries a group name first and falls back to an explicit joint-name list when it doesn't match one — see [Available observations: common parameters](observations.md#common-parameters). So this is equally valid:
-
-```yaml
-# Using a named group...
-- type: joint_pos
-  parameters:
-    joints: legs
-
-# ...or the same thing, inlined:
-- type: joint_pos
-  parameters:
-    joints: [hip_yaw, hip_roll, hip_pitch, knee, ankle_pitch, ankle_roll]
-```
+Most of it is completely **optional**, and a simple help for the user to have clearer and cleaner configurations for his policies. The only necessary content in this file is defining an `all` field to specify the robot's joint order.
 
 Named groups exist to avoid repeating the same joint list across many observations, and across every policy that shares a convention — reach for one once a list like `legs` above shows up more than a couple of times; inline it directly when it doesn't. `type_aliases` and `observation_defaults` are optional in the same spirit: conveniences for policies that would otherwise repeat themselves, not requirements.
 
@@ -55,7 +43,7 @@ policies/
     └── observations.yaml
 ```
 
-It should be checked and configured, if information is missing, before writing a new policy's `policy.yaml` and `observations.yaml`.
+It can be useful to check it before writing a new policy's `policy.yaml` and `observations.yaml`.
 
 ## Minimal example
 
@@ -64,7 +52,7 @@ conventions:
   my_convention:
     joint_groups:
       all: [hip_yaw, hip_roll, hip_pitch, knee, ankle_pitch, ankle_roll, ...]
-      legs: [hip_yaw, hip_roll, hip_pitch, knee, ankle_pitch, ankle_roll]
+      # legs: [hip_yaw, hip_roll, hip_pitch, knee, ankle_pitch, ankle_roll] # example
 ```
 
 This is the minimum required: one convention name, at least one joint group (typically `all`), with joint order matching your training exactly.

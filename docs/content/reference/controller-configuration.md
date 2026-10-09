@@ -77,7 +77,7 @@ One example of this would be the addition of a stantionary state, from which to 
 
 Different robot adaptations implement varying control logic in C++, such as:
 
-- Runtime mode switching between position and torque control
+- Runtime mode switching
 - Solver feedback selection based on the active control mode
 - External-force estimator toggling through datastore calls
 - Force-sensor-driven foot-contact management
