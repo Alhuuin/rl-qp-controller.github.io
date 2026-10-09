@@ -12,13 +12,13 @@
         <meta name="author" content="RL QP Controller contributors">
       
       
-        <link rel="canonical" href="https://alhuuin.github.io/rl-qp-controller.github.io/development/add-observation/">
+        <link rel="canonical" href="https://alhuuin.github.io/rl-qp-controller.github.io/tutorial/04-training-convention/">
       
       
-        <link rel="prev" href="../../reference/logging/">
+        <link rel="prev" href="../03-state-estimation/">
       
       
-        <link rel="next" href="../adapt-new-robot/">
+        <link rel="next" href="../05-policy-configuration/">
       
       
         
@@ -29,7 +29,7 @@
     
     
       
-        <title>Add an observation - RL QP Controller</title>
+        <title>4. Define the training convention - RL QP Controller</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#add-an-observation" class="md-skip">
+        <a href="#4-define-the-training-convention" class="md-skip">
           Skip to content
         </a>
       
@@ -242,7 +242,7 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
   </div>
   <div class="md-source__repository">
-    new-rl-qp-controller
+    new-rl-qp-controller@dev
   </div>
 </a>
     </div>
@@ -280,38 +280,53 @@
       
   
   
+    
   
   
+  
     
     
       
-        
-      
-        
-      
-        
-      
-        
-      
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
-            
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
     
   
-    Getting started
+    Tutorial
   
 
     
@@ -319,35 +334,43 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
   
-    Getting started
+    Tutorial
   
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
               
+            
+              
                 
   
   
   
   
     <li class="md-nav__item">
-      <a href="../../getting-started/general-information/" class="md-nav__link">
+      <a href="../01-fork-and-rename/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    General information
+    1. Fork and rename
   
 
     
@@ -368,14 +391,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../getting-started/controller-configuration/" class="md-nav__link">
+      <a href="../02-controller-configuration/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Configure the controller
+    2. Configure the controller
   
 
     
@@ -396,14 +419,172 @@
   
   
     <li class="md-nav__item">
-      <a href="../../getting-started/configure-conventions/" class="md-nav__link">
+      <a href="../03-state-estimation/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Configure the conventions
+    3. Wire up state estimation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Define the training convention
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Define the training convention
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-specify-a-convention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why specify a convention ?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-the-joint-order-comes-from" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where the joint order comes from
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-convention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The convention
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#type_aliases-empty-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        type_aliases - empty here
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-you-should-be-now" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where you should be now
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-policy-configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Configure the policy
   
 
     
@@ -424,14 +605,70 @@
   
   
     <li class="md-nav__item">
-      <a href="../../getting-started/deploy-policy/" class="md-nav__link">
+      <a href="../06-observations-configuration/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Deploy a policy
+    6. Configure the observations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-running-and-validating/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Run and validate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-next-steps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Next steps
   
 
     
@@ -462,6 +699,16 @@
     
       
         
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
       
         
       
@@ -482,8 +729,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../reference/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -497,8 +745,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
@@ -510,6 +764,8 @@
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -526,6 +782,34 @@
     
   
     Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/controller-configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controller configuration
   
 
     
@@ -630,6 +914,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../reference/add-observation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Add an observation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../reference/logging/" class="md-nav__link">
         
   
@@ -651,189 +963,6 @@
 
               
             
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-    
-  
-  
-  
-    
-    
-      
-        
-      
-        
-      
-        
-      
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
-        
-          
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Development
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Development
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Add an observation
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Add an observation
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#1-declare-the-class" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Declare the class
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-implement-it" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Implement it
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-register-the-type" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Register the type
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-add-optional-aliases-or-default-parameters" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Add optional aliases or default parameters
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-              
-            
               
                 
   
@@ -841,35 +970,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../adapt-new-robot/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Adapt to a new robot
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../adaptation-advice/" class="md-nav__link">
+      <a href="../../reference/adaptation-advice/" class="md-nav__link">
         
   
   
@@ -951,10 +1052,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-declare-the-class" class="md-nav__link">
+  <a href="#why-specify-a-convention" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Declare the class
+        Why specify a convention ?
       
     </span>
   </a>
@@ -962,10 +1063,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-implement-it" class="md-nav__link">
+  <a href="#where-the-joint-order-comes-from" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Implement it
+        Where the joint order comes from
       
     </span>
   </a>
@@ -973,10 +1074,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-register-the-type" class="md-nav__link">
+  <a href="#the-convention" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Register the type
+        The convention
       
     </span>
   </a>
@@ -984,10 +1085,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-add-optional-aliases-or-default-parameters" class="md-nav__link">
+  <a href="#type_aliases-empty-here" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Add optional aliases or default parameters
+        type_aliases - empty here
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-you-should-be-now" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where you should be now
       
     </span>
   </a>
@@ -1011,7 +1123,7 @@
 
 
   
-    <a href="https://github.com/bastien-muraccioli/new-rl-qp-controller/edit/main/docs/content/development/add-observation.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/bastien-muraccioli/new-rl-qp-controller/edit/dev/docs/content/tutorial/04-training-convention.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1020,65 +1132,94 @@
     
       
     
-    <a href="https://github.com/bastien-muraccioli/new-rl-qp-controller/raw/main/docs/content/development/add-observation.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/bastien-muraccioli/new-rl-qp-controller/raw/dev/docs/content/tutorial/04-training-convention.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
     </a>
   
 
 
-<h1 id="add-an-observation">Add an observation<a class="headerlink" href="#add-an-observation" title="Permanent link">&para;</a></h1>
-<p>The observation framework separates configuration, implementation, and registration.</p>
-<h2 id="1-declare-the-class">1. Declare the class<a class="headerlink" href="#1-declare-the-class" title="Permanent link">&para;</a></h2>
-<p>Add a subclass to <code>include/observation/Observations.h</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="cm">/** @brief Describe the quantity, frame, ordering, any relevant information. */</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">MyObservation</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">Observation</span>
-<span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
-<span class="w">  </span><span class="n">MyObservation</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ObservationConfig</span><span class="w"> </span><span class="o">&amp;</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">ObservationConvention</span><span class="w"> </span><span class="o">&amp;</span><span class="p">);</span>
-
-<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">configure</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ObservationContext</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">context</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
-<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">size</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">size_</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
-<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">compute</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ObservationContext</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">context</span><span class="p">,</span>
-<span class="w">               </span><span class="n">Eigen</span><span class="o">::</span><span class="n">Ref</span><span class="o">&lt;</span><span class="n">Eigen</span><span class="o">::</span><span class="n">VectorXd</span><span class="o">&gt;</span><span class="w"> </span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
-
-<span class="k">private</span><span class="o">:</span>
-<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">size_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="p">};</span>
-</code></pre></div>
-<p><code>configure()</code> should resolve parameters and validate robot resources. <code>compute()</code> should perform only the per-cycle computation.</p>
-<h2 id="2-implement-it">2. Implement it<a class="headerlink" href="#2-implement-it" title="Permanent link">&para;</a></h2>
-<p>Add the implementation to <code>src/observation/Observations.cpp</code>.</p>
-<p>Use:</p>
+<h1 id="4-define-the-training-convention">4. Define the training convention<a class="headerlink" href="#4-define-the-training-convention" title="Permanent link">&para;</a></h1>
+<p>This step edits <code>policies/conventions.yaml</code>.</p>
+<h2 id="why-specify-a-convention">Why specify a convention ?<a class="headerlink" href="#why-specify-a-convention" title="Permanent link">&para;</a></h2>
+<p>This is mostly <strong>optional</strong>, but it will provide much cleaner and clearer policy configurations afterwards. Basic examples include :</p>
 <ul>
-<li><code>context.observationRobot</code> for the selected robot state;</li>
-<li><code>context.controllerJointOrder</code> for canonical controller order;</li>
-<li><code>context.policyJointControllerIndices</code> for policy action order;</li>
-<li><code>context.qZeroControllerOrder</code> for the active default pose;</li>
-<li><code>context.command</code> and <code>context.phaseNormalized</code> for runtime signals;</li>
-<li><code>context.convention.resolveObservationParameters(...)</code> to merge convention defaults and local overrides;</li>
-<li><code>readScale(...)</code> for scalar-or-vector scale handling.</li>
+<li>Specifying a name for a joint group in order, instead of having to list them at each observation or policy configuration that needs them.</li>
+<li>Default parameters for observations if multiple policies trained by the same training environment will be tested with this controller : this simply avoids repetition.<br />
+...</li>
 </ul>
+<p>For the full semantics of this file, see the <a href="../../reference/conventions/">Training conventions reference</a> — this page is the concrete fill-in for the <code>unitree_rl_mjlab</code> G1 policy.</p>
 <div class="admonition warning">
-<p class="admonition-title">Validate dimensions in <code>configure()</code></p>
-<p>A wrong <code>size()</code> affects history allocation and the final ONNX input. Fail early when a parameter vector, index list, sensor, body, or joint selector is inconsistent.</p>
+<p class="admonition-title">Warning</p>
+<p>An <code>all</code> entry containing all joints in the order used by the policy is <strong>necessary</strong>. This is needed to handle the policy appropriately. The rest of the options are completely optional.</p>
 </div>
-<h2 id="3-register-the-type">3. Register the type<a class="headerlink" href="#3-register-the-type" title="Permanent link">&para;</a></h2>
-<p>Add the implementation name to <code>makeDefaultObservationRegistry()</code> in <code>src/observation/Observation.cpp</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="n">registry</span><span class="p">.</span><span class="n">registerType</span><span class="p">(</span><span class="s">&quot;my_observation&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">makeObservation</span><span class="o">&lt;</span><span class="n">MyObservation</span><span class="o">&gt;</span><span class="p">);</span>
-</code></pre></div>
-<p>It can then be used directly:</p>
-<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_observation</span>
-<span class="w">  </span><span class="nt">parameters</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="w"> </span><span class="nv">...</span><span class="w"> </span><span class="p p-Indicator">}</span>
-</code></pre></div>
-<h2 id="4-add-optional-aliases-or-default-parameters">4. Add optional aliases or default parameters<a class="headerlink" href="#4-add-optional-aliases-or-default-parameters" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="nt">type_aliases</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">training_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_observation</span>
+<h2 id="where-the-joint-order-comes-from">Where the joint order comes from<a class="headerlink" href="#where-the-joint-order-comes-from" title="Permanent link">&para;</a></h2>
+<p>The convention's <code>joint_groups.all</code> must list every actuated joint in <strong>exactly the order the ONNX model was trained and exported with</strong>. For a policy trained with <code>unitree_rl_mjlab</code>, that order is published alongside the exported model, in the policy's <code>deploy.yaml</code> (see <a href="../05-policy-configuration/">Configure the policy</a> for more on that file) as <code>joint_ids_map: [0, 1, 2, ..., 28]</code> — an identity mapping, meaning the deployment order <em>is</em> the training order, with no reindexing needed. The 29 joint names themselves come from the G1's own URDF/robot description, in the same order used throughout <code>unitree_rl_mjlab</code>'s G1 task configuration.</p>
+<h2 id="the-convention">The convention<a class="headerlink" href="#the-convention" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nt">conventions</span><span class="p">:</span>
+<span class="c1">#   general:</span>
+<span class="c1">#     observation_defaults:</span>
+<span class="w">      </span><span class="c1"># Optional : if any general observation default could to be specify, specify them here. Example :</span>
+<span class="w">      </span><span class="c1"># base_orientation:</span>
+<span class="w">      </span><span class="c1">#   sensor: Accelerometer</span>
+<span class="w">      </span><span class="c1">#   scale: 1.0</span>
 
-<span class="nt">default_parameters</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">training_name</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">scale</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
+<span class="w">  </span><span class="nt">mjlab</span><span class="p">:</span><span class="w"> </span><span class="c1"># example : mjlab, isaaclab, custom</span>
+<span class="w">    </span><span class="nt">joint_groups</span><span class="p">:</span>
+<span class="w">      </span><span class="c1"># The order here must exactly match the policy training/export order.</span>
+<span class="w">      </span><span class="c1"># These joint groups can be used to resolve the joint order/joints used by the observations, as well as the actions outputed by the policy.</span>
+<span class="w">      </span><span class="nt">all</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span>
+<span class="w">        </span><span class="s">"left_hip_pitch_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"left_hip_roll_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"left_hip_yaw_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"left_knee_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"left_ankle_pitch_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"left_ankle_roll_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"right_hip_pitch_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"right_hip_roll_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"right_hip_yaw_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"right_knee_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"right_ankle_pitch_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"right_ankle_roll_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"waist_yaw_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"waist_roll_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"waist_pitch_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"left_shoulder_pitch_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"left_shoulder_roll_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"left_shoulder_yaw_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"left_elbow_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"left_wrist_roll_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"left_wrist_pitch_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"left_wrist_yaw_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"right_shoulder_pitch_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"right_shoulder_roll_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"right_shoulder_yaw_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"right_elbow_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"right_wrist_roll_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"right_wrist_pitch_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">"right_wrist_yaw_joint"</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="c1">#   joint_subset: [</span>
+<span class="w">    </span><span class="c1">#     "jointName1",</span>
+<span class="w">    </span><span class="c1">#     "jointName2"</span>
+<span class="w">    </span><span class="c1">#     ]</span>
+
+<span class="w">    </span><span class="c1"># type_aliases:</span>
+<span class="w">    </span><span class="c1">#   # Optional : aliases can be specified for the observations (to fit their training environment name or else). Example :</span>
+<span class="w">    </span><span class="c1">#   # builtin_sensor: force_sensor # (alias: available_observation)</span>
+
+<span class="w">    </span><span class="c1"># observation_defaults:</span>
+<span class="w">    </span><span class="c1">#   # Optional : if any convention-specific observation default could to be specify, specify them here. Example :</span>
+<span class="w">    </span><span class="c1">#   # joint_pos:</span>
+<span class="w">    </span><span class="c1">#   #   joints: joint_subset</span>
+
+<span class="c1"># Add as many conventions as needed.</span>
 </code></pre></div>
+<p>The convention is named <code>mjlab</code>, after the training environment — a naming choice, not something the controller interprets specially.</p>
+<h2 id="type_aliases-empty-here"><code>type_aliases</code> - empty here<a class="headerlink" href="#type_aliases-empty-here" title="Permanent link">&para;</a></h2>
+<p><a href="../../reference/conventions/#type_aliases">Training conventions</a> lets you write <code>observations.yaml</code> using the training environment's own names (e.g. <code>joint_pos_rel</code>) and have them resolve to the controller's internal type (<code>joint_pos</code>). If you're setting up a convention you expect to reuse across many policies from the same training environment, defining <code>type_aliases</code> once could be worth it.</p>
+<h2 id="where-you-should-be-now">Where you should be now<a class="headerlink" href="#where-you-should-be-now" title="Permanent link">&para;</a></h2>
+<p><code>policies/conventions.yaml</code> now defines a real <code>mjlab</code> convention with the correct joint order. <code>grep -rn "TODO(robot)" .</code> should no longer flag anything in this file. Next: the policy itself and its configurations.</p>
 
 
   
@@ -1093,13 +1234,13 @@
   
     <!-- <span class="controller-page-date">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
-      <strong>Created:</strong> <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="July 22, 2026 06:44:10 UTC">July 22, 2026</span>
+      <strong>Created:</strong> <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 06:27:24 UTC">October 9, 2026</span>
     </span>
   
   
     <span class="controller-page-date">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
-      <strong>Last updated:</strong> <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="July 28, 2026 04:30:35 UTC">July 28, 2026</span>
+      <strong>Last updated:</strong> <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 08:37:34 UTC">October 9, 2026</span>
     </span> -->
   
 

@@ -2,58 +2,82 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://alhuuin.github.io/rl-qp-controller.github.io/</loc>
-         <lastmod>2026-07-30</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://alhuuin.github.io/rl-qp-controller.github.io/troubleshooting/</loc>
-         <lastmod>2026-07-30</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
-         <loc>https://alhuuin.github.io/rl-qp-controller.github.io/development/adapt-new-robot/</loc>
-         <lastmod>2026-07-30</lastmod>
+         <loc>https://alhuuin.github.io/rl-qp-controller.github.io/reference/</loc>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
-         <loc>https://alhuuin.github.io/rl-qp-controller.github.io/development/adaptation-advice/</loc>
-         <lastmod>2026-07-30</lastmod>
+         <loc>https://alhuuin.github.io/rl-qp-controller.github.io/reference/adaptation-advice/</loc>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
-         <loc>https://alhuuin.github.io/rl-qp-controller.github.io/development/add-observation/</loc>
-         <lastmod>2026-07-30</lastmod>
-    </url>
-    <url>
-         <loc>https://alhuuin.github.io/rl-qp-controller.github.io/getting-started/configure-conventions/</loc>
-         <lastmod>2026-07-30</lastmod>
-    </url>
-    <url>
-         <loc>https://alhuuin.github.io/rl-qp-controller.github.io/getting-started/controller-configuration/</loc>
-         <lastmod>2026-07-30</lastmod>
-    </url>
-    <url>
-         <loc>https://alhuuin.github.io/rl-qp-controller.github.io/getting-started/deploy-policy/</loc>
-         <lastmod>2026-07-30</lastmod>
-    </url>
-    <url>
-         <loc>https://alhuuin.github.io/rl-qp-controller.github.io/getting-started/general-information/</loc>
-         <lastmod>2026-07-30</lastmod>
+         <loc>https://alhuuin.github.io/rl-qp-controller.github.io/reference/add-observation/</loc>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://alhuuin.github.io/rl-qp-controller.github.io/reference/architecture/</loc>
-         <lastmod>2026-07-30</lastmod>
+         <lastmod>2026-10-09</lastmod>
+    </url>
+    <url>
+         <loc>https://alhuuin.github.io/rl-qp-controller.github.io/reference/controller-configuration/</loc>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://alhuuin.github.io/rl-qp-controller.github.io/reference/conventions/</loc>
-         <lastmod>2026-07-30</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://alhuuin.github.io/rl-qp-controller.github.io/reference/logging/</loc>
-         <lastmod>2026-07-30</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://alhuuin.github.io/rl-qp-controller.github.io/reference/observations/</loc>
-         <lastmod>2026-07-30</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://alhuuin.github.io/rl-qp-controller.github.io/reference/policy-options/</loc>
-         <lastmod>2026-07-30</lastmod>
+         <lastmod>2026-10-09</lastmod>
+    </url>
+    <url>
+         <loc>https://alhuuin.github.io/rl-qp-controller.github.io/tutorial/</loc>
+         <lastmod>2026-10-09</lastmod>
+    </url>
+    <url>
+         <loc>https://alhuuin.github.io/rl-qp-controller.github.io/tutorial/01-fork-and-rename/</loc>
+         <lastmod>2026-10-09</lastmod>
+    </url>
+    <url>
+         <loc>https://alhuuin.github.io/rl-qp-controller.github.io/tutorial/02-controller-configuration/</loc>
+         <lastmod>2026-10-09</lastmod>
+    </url>
+    <url>
+         <loc>https://alhuuin.github.io/rl-qp-controller.github.io/tutorial/03-state-estimation/</loc>
+         <lastmod>2026-10-09</lastmod>
+    </url>
+    <url>
+         <loc>https://alhuuin.github.io/rl-qp-controller.github.io/tutorial/04-training-convention/</loc>
+         <lastmod>2026-10-09</lastmod>
+    </url>
+    <url>
+         <loc>https://alhuuin.github.io/rl-qp-controller.github.io/tutorial/05-policy-configuration/</loc>
+         <lastmod>2026-10-09</lastmod>
+    </url>
+    <url>
+         <loc>https://alhuuin.github.io/rl-qp-controller.github.io/tutorial/06-observations-configuration/</loc>
+         <lastmod>2026-10-09</lastmod>
+    </url>
+    <url>
+         <loc>https://alhuuin.github.io/rl-qp-controller.github.io/tutorial/07-running-and-validating/</loc>
+         <lastmod>2026-10-09</lastmod>
+    </url>
+    <url>
+         <loc>https://alhuuin.github.io/rl-qp-controller.github.io/tutorial/08-next-steps/</loc>
+         <lastmod>2026-10-09</lastmod>
     </url>
 </urlset>
