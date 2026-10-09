@@ -5,28 +5,33 @@ site_description: Deploy ONNX reinforcement-learning policies through an mc_rtc 
 site_author: RL QP Controller contributors
 site_url: https://alhuuin.github.io/rl-qp-controller.github.io/
 repo_url: https://github.com/bastien-muraccioli/new-rl-qp-controller
-repo_name: new-rl-qp-controller
-edit_uri: edit/main/docs/content/
+repo_name: new-rl-qp-controller@dev
+edit_uri: edit/dev/docs/content/
 
 docs_dir: content/
 
 nav:
   - Overview: index.md
-  - Getting started:
-      - General information: getting-started/general-information.md
-      - Configure the controller: getting-started/controller-configuration.md
-      - Configure the conventions: getting-started/configure-conventions.md
-      - Deploy a policy: getting-started/deploy-policy.md
+  - Tutorial:
+      - tutorial/index.md
+      - 1. Fork and rename: tutorial/01-fork-and-rename.md
+      - 2. Configure the controller: tutorial/02-controller-configuration.md
+      - 3. Wire up state estimation: tutorial/03-state-estimation.md
+      - 4. Define the training convention: tutorial/04-training-convention.md
+      - 5. Configure the policy: tutorial/05-policy-configuration.md
+      - 6. Configure the observations: tutorial/06-observations-configuration.md
+      - 7. Run and validate: tutorial/07-running-and-validating.md
+      - 8. Next steps: tutorial/08-next-steps.md
   - Reference:
+      - reference/index.md
       - Architecture: reference/architecture.md
+      - Controller configuration: reference/controller-configuration.md
       - Training conventions: reference/conventions.md
       - Available policy options: reference/policy-options.md
       - Available observations: reference/observations.md
+      - Add an observation: reference/add-observation.md
       - Logging: reference/logging.md
-  - Development:
-      - Add an observation: development/add-observation.md
-      - Adapt to a new robot: development/adapt-new-robot.md
-      - Adaptation advice: development/adaptation-advice.md
+      - Adaptation advice: reference/adaptation-advice.md
   - Troubleshooting: troubleshooting.md
 
 theme:
@@ -70,7 +75,8 @@ extra_css:
 extra:
   controller_tagline: A reusable mc_rtc architecture for deploying reinforcement-learning policies with optional QP constraint enforcement.
   repositories:
-    template: https://github.com/bastien-muraccioli/new-rl-qp-controller
+    template: https://github.com/bastien-muraccioli/new-rl-qp-controller/tree/dev
+    g1: https://github.com/Alhuuin/g1_rl_qp_controller
     h1: https://github.com/Alhuuin/h1_rl_qp_controller
     hrp5p: https://github.com/bastien-muraccioli/hrp5p_rl_qp_controller
   header_links:

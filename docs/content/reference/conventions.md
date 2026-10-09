@@ -20,6 +20,61 @@ training_convention: mc_rtc
 
 A convention changes representation, not semantics. Always compare it with the actual training configuration rather than relying only on the convention name.
 
+## Is a convention required? { #is-a-convention-required }
+
+Partially — it depends on which field you're filling in.
+
+- **`training_convention` in `observations.yaml` is always required**, and must resolve to a convention entry here — even a minimal one.
+- **`action.joints` and `action.controlled_joints` in `policy.yaml` must be the *name* of a `joint_groups` entry.** There's no inline alternative: the parser reads them as a plain string, not a list, so at minimum your convention needs one named group for the controller's full actuated joint set (typically called `all`).
+- **Every per-observation `joints` parameter in `observations.yaml`, by contrast, is optional to route through a named group.** The resolver tries a group name first and falls back to an explicit joint-name list when it doesn't match one — see [Available observations: common parameters](observations.md#common-parameters). So this is equally valid:
+
+```yaml
+# Using a named group...
+- type: joint_pos
+  parameters:
+    joints: legs
+
+# ...or the same thing, inlined:
+- type: joint_pos
+  parameters:
+    joints: [hip_yaw, hip_roll, hip_pitch, knee, ankle_pitch, ankle_roll]
+```
+
+Named groups exist to avoid repeating the same joint list across many observations, and across every policy that shares a convention — reach for one once a list like `legs` above shows up more than a couple of times; inline it directly when it doesn't. `type_aliases` and `observation_defaults` are optional in the same spirit: conveniences for policies that would otherwise repeat themselves, not requirements.
+
+## Location
+
+Conventions are shared by every policy and are defined in `<policies_root>/conventions.yaml`:
+
+```text
+policies/
+├── conventions.yaml
+└── my_policy/
+    ├── my_policy.onnx
+    ├── policy.yaml
+    └── observations.yaml
+```
+
+It should be checked and configured, if information is missing, before writing a new policy's `policy.yaml` and `observations.yaml`.
+
+## Minimal example
+
+```yaml
+conventions:
+  my_convention:
+    joint_groups:
+      all: [hip_yaw, hip_roll, hip_pitch, knee, ankle_pitch, ankle_roll, ...]
+      legs: [hip_yaw, hip_roll, hip_pitch, knee, ankle_pitch, ankle_roll]
+```
+
+This is the minimum required: one convention name, at least one joint group (typically `all`), with joint order matching your training exactly.
+
+Joint groups can be used to specify either the action joints or the joints to consider for a specific observation.
+
+!!! warning "Defaults can produce unexpected behavior if overlooked"
+    Convention defaults are easy to forget when deploying a new policy against an existing convention.
+    Always check `observation_defaults` — both in `conventions.<name>` and in `conventions.general` — before assuming an observation uses only the parameters written in `observations.yaml`.
+
 ## File structure
 
 | Path | Required | Purpose |
@@ -144,3 +199,12 @@ conventions:
 3. Local parameters in `observations.yaml` override all of the above
 
 This means a policy's explicit parameters always take precedence.
+
+## Validation checklist
+
+- [ ] Every `joint_groups` entry order matches training/export order exactly.
+- [ ] The `training_convention` referenced by each policy exists in this file.
+- [ ] All `type_aliases` values are registered internal observation types (see [Available observations](observations.md)).
+- [ ] Every observation name used in `observations.yaml` resolves either directly or through an alias.
+- [ ] `observation_defaults` — both in `conventions.general` and the convention profile — match your training setup.
+- [ ] Convention-specific defaults can be overridden in policy-local `observations.yaml` parameters when needed.

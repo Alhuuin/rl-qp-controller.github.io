@@ -96,4 +96,4 @@ The convention is named `mjlab`, after the training environment — a naming cho
 
 ## Where you should be now
 
-`policies/conventions.yaml` now defines a real `mjlab` convention with the correct joint order. `grep -rn "TODO(robot)" .` should no longer flag anything in this file. Next: the policy itself and its configuration.
+`policies/conventions.yaml` now defines a real `mjlab` convention with the correct joint order. `grep -rn "TODO(robot)" .` should no longer flag anything in this file. Next: the policy itself and its configurations.

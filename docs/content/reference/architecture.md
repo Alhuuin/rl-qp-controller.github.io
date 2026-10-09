@@ -64,7 +64,7 @@ new-rl-qp-controller/
 └── ext/onnxruntime
 ```
 
-`ext/onnxruntime` is included as a project submodule in this repository. No separate system installation of ONNX Runtime is required for this project.
+`ext/onnxruntime` is a copy of ONNX Runtime (headers and shared libraries) vendored in this repository: no separate installation is required. The build looks for the library only in that folder (`find_library(... NO_DEFAULT_PATH)` in `src/CMakeLists.txt`) and takes its headers from there, so an ONNX Runtime installed on the system is not used to build the controller. The vendored libraries are installed alongside the controller library.
 
 ## Main objects and ownership
 

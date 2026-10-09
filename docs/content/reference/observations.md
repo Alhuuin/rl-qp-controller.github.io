@@ -35,7 +35,7 @@ The final policy input is concatenated in the same order as the YAML list. For e
 | `history` | Number of stored samples for this term. Must be positive. Default: `1`. |
 | `name` | Optional unique/debug label. Defaults to the requested YAML type. Useful when a type appears multiple times. |
 | `scale` | Scalar or vector multiplier. A vector must match the observation size. |
-| `joints` | Named joint group, explicit joint list, or convention-specific selector for joint-based terms. |
+| `joints` | A named `conventions.yaml` joint group, or an explicit inline list of joint names — the group is resolved first, falling back to the list. Using a convention group here is a convenience, not a requirement; see [Training conventions: is a convention required?](conventions.md#is-a-convention-required). |
 
 Convention defaults are merged first, followed by local parameters from `observations.yaml`, so policy-local values override the convention.
 
@@ -202,7 +202,7 @@ force_sensor
 Unknown internal types fail with an error that also lists all known registry entries.
 
 !!! tip "Unknown observation type"
-    In the case a specific observation type is needed and missing, see [Add an observation](../development/add-observation.md).
+    In the case a specific observation type is needed and missing, see [Add an observation](add-observation.md).
 
 ## Dimension validation
 

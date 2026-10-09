@@ -2,11 +2,13 @@
 title: Configure the controller
 ---
 
-# Configure the controller
+# Controller configuration
 
-If you are using a robot-adapted version of this controller (such as H1 or HRP5P), most of the configuration is already done for you. The controller configuration file is structured like any standard mc_rtc controller, and you likely only need to verify a few RL-specific settings rather than build it from scratch.
+The controller configuration file (`etc/<Controller>.in.yaml`) is structured like any standard mc_rtc controller configuration. This page documents the RL-specific settings it must contain, field by field, and the ObserverPipeline usually used.
 
-This page covers the core RL policy runtime configuration. Standard mc_rtc settings (FSM states, transitions, etc.) can be added or modified freely; the policy handling will not interfere with them.
+If you are working through [the tutorial](../tutorial/index.md), see [Configure the controller](../tutorial/02-controller-configuration.md) for a worked example of filling in this file for a Unitree G1. If you are using an already-adapted version of this controller (such as G1, H1, or HRP5P), most of this is already done for you and you likely only need to verify a few settings rather than build them from scratch.
+
+Standard mc_rtc settings (FSM states, transitions, etc.) can be added or modified freely; the policy handling will not interfere with them.
 
 ## Essential configuration
 
@@ -32,7 +34,7 @@ default_policy: my_policy
 
 | Key | Meaning |
 |---|---|
-| `policies_root` | Directory containing `conventions.yaml` one subdirectory per policy. All policies under this root are loaded and can be switched to using the GUI. |
+| `policies_root` | Directory containing `conventions.yaml` and one subdirectory per policy. All policies under this root are loaded and can be switched to using the GUI. |
 | `default_policy` | Name of the first policy to run. Must match a loaded policy. |
 
 ### 3. Configure the observer pipeline
@@ -81,4 +83,6 @@ Different robot adaptations implement varying control logic in C++, such as:
 - Force-sensor-driven foot-contact management
 - QP enforcement or bypass paths for torque commands
 
-Inspect the main controller and active FSM states together with the YAML configuration to understand the full control behavior. For context-based guidance, see [Adaptation advice](../development/adaptation-advice.md).
+Inspect the main controller and active FSM states together with the YAML configuration to understand the full control behavior. For context-based guidance, see [Adaptation advice](adaptation-advice.md).
+
+For a concrete example of that C++-side behavior — registering an `anchorFrameFunction` datastore callback for the `Tilt` observer — see [Wire up state estimation](../tutorial/03-state-estimation.md) in the tutorial.

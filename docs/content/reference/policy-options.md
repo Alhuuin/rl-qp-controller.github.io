@@ -4,7 +4,28 @@ title: Policy options
 
 # Policy options
 
-This page documents fields read by the current policy parser. We saw the minimal accepted option in [Getting started](../getting-started/deploy-policy.md).
+This page documents fields read by the current policy parser. See [the tutorial](../tutorial/05-policy-configuration.md) for a complete worked example.
+
+`policy.yaml` lives alongside `observations.yaml` and an ONNX file in its own folder under `policies_root` — see [Training conventions §Location](conventions.md#location) for that layout, shared with `observations.yaml`.
+
+## Minimal example
+
+Only `action.joints` and `control.kp`/`control.kd` are strictly required; everything else falls back to a default:
+
+```yaml
+action:
+  joints: all
+
+control:
+  kp:
+    jointName1: 100.0
+    jointName2: 100.0
+    jointName3: 100.0
+  kd:
+    jointName1: 10.0
+    jointName2: 10.0
+    jointName3: 10.0
+```
 
 ## Complete structure
 
@@ -45,7 +66,7 @@ control:
 
 | Field | Required | Default | Description |
 |---|---:|---|---|
-| `joints` | Yes | — | Convention group defining ONNX output order and size. |
+| `joints` | Yes | — | Name of a `conventions.yaml` joint group, defining ONNX output order and size. Unlike observations' `joints` parameter (see [Available observations](observations.md#common-parameters)), this must be a named group — there's no inline-list alternative, so a convention is always required for this field. See [Training conventions §Is a convention required?](conventions.md#is-a-convention-required). |
 | `controlled_joints` | No | `joints` | Applied subset; must be contained in `joints`. |
 | `scale` | No | `1.0` | Action scale accepted by the runtime. |
 | `q0` | No | controller/default posture | Full default-pose map when provided. |

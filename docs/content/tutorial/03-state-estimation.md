@@ -119,4 +119,4 @@ For your own robot, confirm the constraint set matches what your robot actually 
 
 ## Where you should be now
 
-`grep -rn "TODO(robot)" .` now shouldn't report any markers. Everything about the controller configuration and its state estimation is complete. What remains is entirely in `policies/`: the policy itself, its configuration, and optional conventions for smoother configurations.
+`grep -rn "TODO(robot)" .` now shouldn't report any markers in this file. Everything about the controller configuration and its state estimation is complete. What remains is entirely in `policies/`: the policy itself, its configuration, and optional conventions for smoother configurations.
