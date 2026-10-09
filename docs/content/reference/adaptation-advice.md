@@ -23,7 +23,7 @@ In this case, consider introducing a dedicated `Initial` state before entering t
 
 !!! example "Example"
 
-    The HRP5P controller includes a dedicated `Initial` state before switching to RL, while the H1 controller starts directly in the RL state.
+    The HRP5P controller includes a dedicated `Initial` state before switching to RL, while the H1 and G1 controllers start directly in the RL state.
 
 ---
 
@@ -60,7 +60,7 @@ Typical differences include:
 
 !!! tip
 
-    The H1 and HRP5P repositories provide examples of observation configurations for robots with different sensing capabilities.
+    The G1, H1, and HRP5P repositories provide examples of observation configurations for robots with different sensing capabilities.
 
 ---
 
@@ -74,11 +74,14 @@ The callback returns the anchor frame used as the tilt reference. Its implementa
 
 !!! warning
 
-    Enabling the `Tilt` observer in `observations.yaml` is not sufficient. The corresponding datastore callback must also be provided by the controller.
+    Listing the `Tilt` observer in the controller configuration's `ObserverPipelines` is not sufficient on its own. The corresponding datastore callback must also be provided by the controller.
 
 !!! example "Example"
 
-    The H1 implementation demonstrates how to register the `anchorFrameFunction` callback and implement the robot-specific anchor frame computation.
+    The H1 implementations demonstrates how to register the `anchorFrameFunction` callback and implement the robot-specific anchor frame computation. [The tutorial](../tutorial/03-state-estimation.md) walks through the same wiring for G1, which estimates the anchor as an external-torque-weighted average of the two foot positions.
+
+!!! tip "Observer availability"
+    Some of the Observers used here are recent additions still living in forks or an open pull request rather than a release. If you have not used the proposed [superbuild](https://github.com/safe-rl-qp/safe-rl-qp-mc-rtc-superbuild/tree/main), check what your own `mc_state_observation` install actually provides before relying on a given type being available.
 
 ---
 
@@ -99,7 +102,7 @@ These parameters directly depend on the robot hardware and should be reviewed wh
 
 !!! example "Examples"
 
-    The H1 implementation illustrates a momentum-based configuration (`MomentumObserver`) without force/torque sensors, while the HRP5P implementation provides an example of a force-sensor-based configuration (`ForceSensorBased`).
+    The H1 and G1 implementations both illustrate a momentum-based configuration (`MomentumObserver`) without force/torque sensors, while the HRP5P implementation provides an example of a force-sensor-based configuration (`ForceSensorBased`).
 
 ---
 
@@ -119,4 +122,4 @@ The default task and constraint set is intended as a starting point.
 
 Depending on the robot, additional components may be required, such as constraints or robot-specific mechanisms.
 
-Adapt the task stack to the robot rather than trying to preserve the default configuration.
+Adapt the task stack to the robot rather than trying to preserve the default configuration. This includes the CBF-QP gains (`zeta_jointLimit_`, `lambda_jointLimit_`, `zeta_selfCollision_`, `lambda_selfCollision_` in the controller header) and the stiffness/weight of the `TorqueJointTask` itself — see [the tutorial's closing checklist](../tutorial/08-next-steps.md#adapting-a-different-robot) for where these live in the source. The G1 controller currently runs with these left at the template's defaults; that they work doesn't by itself tell you whether they were deliberately checked or just never revisited — review them for your own robot either way.

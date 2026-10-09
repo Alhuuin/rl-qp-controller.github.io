@@ -6,12 +6,12 @@ title: RL QP Controller
 
 # RL QP Controller
 
-**Deploy ONNX reinforcement-learning policies inside an mc_rtc controller, with optional QP-based constraint enforcement.**
+**Deploy ONNX reinforcement-learning policies inside an mc_rtc controller, with QP-based constraint enforcement.**
 
 <div class="hero-actions" markdown>
-[Get started](getting-started/general-information.md){ .md-button .md-button--primary }
-[Deploy a policy](getting-started/deploy-policy.md){ .md-button }
-[Explore the architecture](reference/architecture.md){ .md-button }
+[Tutorial](tutorial/index.md){ .md-button .md-button--primary }
+[Reference](reference/index.md){ .md-button }
+[Troubleshooting](./troubleshooting.md){ .md-button }
 </div>
 
 </div>
@@ -22,33 +22,44 @@ title: RL QP Controller
 
 ## Project variants
 
-The project is maintained as a reusable base with adaptation repositories. Here are the currently available versions:
+The project is maintained as a reusable base template. **[The tutorial](tutorial/index.md) is the intended way to start a new integration**: it walks you through adapting the template end to end to a Unitree G1, and running an open-source policy. The same steps apply to any other robot and policy.
+
+The adaptations below are what following that tutorial produces for a specific robot. If your target happens to match one of them closely - similar robot, similar policy — it can be useful to have a look at them as examples or inspirations.
 
 <div class="repo-grid" markdown>
 
-<div class="repo-card" markdown>
+<div class="repo-card repo-card--featured" markdown>
 ### :material-source-repository: Base template
 
-The robot-agnostic starting point. Use this repository when adapting the controller to a new robot.
+The robot-agnostic starting point, on its `dev` branch. This is the repository the tutorial adapts.
 
-[Open template repository](https://github.com/example/rl-qp-controller-template){ .md-button .md-button--primary }
+[Open template repository](https://github.com/bastien-muraccioli/new-rl-qp-controller/tree/dev){ .md-button .md-button--primary }
 </div>
+
+<div class="repo-card" markdown>
+### :material-robot: Unitree G1
+
+Built by following this documentation's tutorial: a Unitree G1 running an open-source velocity policy from Unitree.
+
+[Open G1 repository](https://github.com/Alhuuin/g1_rl_qp_controller){ .md-button }
+</div>
+
+<div class="repo-card" markdown>
+### :material-robot: HRP5P
+
+The HRP5P adaptation, including its robot configuration, policies, controller-specific integration, and FSM states.
+This adaptation is currently closed-source.
+
+[HRP5P repository (closed-source)](https://github.com/bastien-muraccioli/hrp5p_rl_qp_controller){ .md-button }
+</div>
+
 
 <div class="repo-card" markdown>
 ### :material-robot: Unitree H1
 
 The H1 adaptation, including its robot configuration, policies, and controller-specific integration.
 
-[Open H1 repository](https://github.com/example/rl-qp-controller-h1){ .md-button }
-</div>
-
-<div class="repo-card repo-card--featured" markdown>
-### :material-robot: HRP5P
-
-The HRP5P adaptation, including its robot configuration, policies, controller-specific integration, and FSM states.
-This adaptation is currently closed-source.
-
-[HRP5P repository (closed-source)](https://github.com/example/rl-qp-controller-hrp5p){ .md-button }
+[Open H1 repository](https://github.com/Alhuuin/h1_rl_qp_controller){ .md-button }
 </div>
 
 </div>
@@ -80,7 +91,6 @@ Robot state ──► ObservationManager ──► ONNX policy ──► action 
 
 ## Documentation map
 
-- **Getting started** walks you through the basics: general information, configuring conventions, setting up the controller, and deploying your first policy.
-- **Reference** documents the full system architecture, available controllers and policies, observation types, and logging outputs.
-- **Development** explains how to add custom observations, adapt the template to a new robot, and apply context-based integration advice.
-- **Troubleshooting** covers common issues and solutions.
+- **[Tutorial](tutorial/index.md)** takes you step by step through adapting the template to a Unitree G1 and an open-source policy: forking and renaming, controller configuration, state estimation, training conventions, and both policy configuration files, down to a running controller.
+- **[Reference](reference/index.md)** documents the full system architecture, every configuration file and field, available observations, and logging outputs — the pages the tutorial links to as it goes — as well as how to add custom observations and apply context-based integration advice when adapting further.
+- **[Troubleshooting](troubleshooting.md)** covers common issues and solutions.
