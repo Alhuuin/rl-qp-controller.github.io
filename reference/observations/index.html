@@ -1394,14 +1394,14 @@
 
 
 <h1 id="available-observations">Available observations<a class="headerlink" href="#available-observations" title="Permanent link">&para;</a></h1>
-<p>The default observation registry currently exposes ten internal observation types. Training conventions may alias external names such as <code>joint_pos_rel</code> or <code>generated_commands</code> to these implementations.</p>
+<p>The default observation registry exposes ten internal observation types. If a needed observation is missing, it can be added : see <a href="../add-observation/">Add an observation</a>.</p>
 <h2 id="observation-pipeline">Observation pipeline<a class="headerlink" href="#observation-pipeline" title="Permanent link">&para;</a></h2>
 <p>Each entry in <code>observations.yaml</code> becomes an <code>ObservationConfig</code>, an <code>Observation</code> subclass, and a history buffer managed by <code>ObservationManager</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">training_convention</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mjlab</span>
 <span class="nt">history_order_newest_first</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 
 <span class="nt">observations</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">joint_pos_rel</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">joint_pos</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">joint_positions</span>
 <span class="w">    </span><span class="nt">parameters</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">joints</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">all_no_grippers</span>
@@ -1428,7 +1428,7 @@
 </tr>
 <tr>
 <td><code>name</code></td>
-<td>Optional unique/debug label. Defaults to the requested YAML type. Useful when a type appears multiple times.</td>
+<td>Optional unique/debug label. Defaults to the requested YAML type.</td>
 </tr>
 <tr>
 <td><code>scale</code></td>
@@ -1741,7 +1741,7 @@ force_sensor
   
     <span class="controller-page-date">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
-      <strong>Last updated:</strong> <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 08:37:34 UTC">October 9, 2026</span>
+      <strong>Last updated:</strong> <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 13, 2026 08:57:23 UTC">October 13, 2026</span>
     </span> -->
   
 

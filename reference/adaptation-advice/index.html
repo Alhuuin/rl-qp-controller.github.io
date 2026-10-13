@@ -983,17 +983,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#control-modes" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Control modes
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#controller-tasks-and-constraints" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1129,17 +1118,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#control-modes" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Control modes
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#controller-tasks-and-constraints" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1187,7 +1165,7 @@
 <p>While the policy runtime is designed to be robot-agnostic, integrating a new robot often requires adapting parts of the controller to its hardware and control architecture.</p>
 <p>This page highlights examples of adaptations encountered when integrating a new robot.</p>
 <h2 id="initial-state">Initial state<a class="headerlink" href="#initial-state" title="Permanent link">&para;</a></h2>
-<p>Some robots can safely start directly in torque control and immediately execute the RL policy.</p>
+<p>Some robots can safely start directly and immediately execute the RL policy.</p>
 <p>Others require an initialization phase before enabling RL, for example to:</p>
 <ul>
 <li>reach a stable posture;</li>
@@ -1216,7 +1194,7 @@
 </div>
 <hr />
 <h2 id="available-sensors">Available sensors<a class="headerlink" href="#available-sensors" title="Permanent link">&para;</a></h2>
-<p>Not every robot provides the same measurements. Modifications of the observations implementations might be needed.</p>
+<p>Not every robot provides the same measurements. Modifications of the ObserverPipeline and the observations implementations might be needed.</p>
 <p>When configuring <code>observations.yaml</code>, only enable observations that can be computed from the available hardware.</p>
 <p>Typical differences include:</p>
 <ul>
@@ -1227,7 +1205,7 @@
 </ul>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>The G1, H1, and HRP5P repositories provide examples of observation configurations for robots with different sensing capabilities.</p>
+<p>The G1, H1, and HRP5P repositories provide examples of observers and observation configurations for robots with different sensing capabilities.</p>
 </div>
 <hr />
 <h2 id="tilt-observer">Tilt observer<a class="headerlink" href="#tilt-observer" title="Permanent link">&para;</a></h2>
@@ -1240,7 +1218,7 @@
 </div>
 <div class="admonition example">
 <p class="admonition-title">Example</p>
-<p>The H1 implementations demonstrates how to register the <code>anchorFrameFunction</code> callback and implement the robot-specific anchor frame computation. <a href="../../tutorial/03-state-estimation/">The tutorial</a> walks through the same wiring for G1, which estimates the anchor as an external-torque-weighted average of the two foot positions.</p>
+<p>The H1 implementations demonstrates how to register the <code>anchorFrameFunction</code> callback and implement the robot-specific anchor frame computation. <a href="../../tutorial/03-state-estimation/">The tutorial</a> walks through the same wiring for G1.</p>
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Observer availability</p>
@@ -1262,13 +1240,7 @@
 <p class="admonition-title">Examples</p>
 <p>The H1 and G1 implementations both illustrate a momentum-based configuration (<code>MomentumObserver</code>) without force/torque sensors, while the HRP5P implementation provides an example of a force-sensor-based configuration (<code>ForceSensorBased</code>).</p>
 </div>
-<hr />
-<h2 id="control-modes">Control modes<a class="headerlink" href="#control-modes" title="Permanent link">&para;</a></h2>
-<p>Robots differ in the control interfaces they expose. Choose the controller architecture accordingly.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<p>The H1 controller is designed around torque control, while the HRP5P implementation demonstrates a controller that transitions from an initialization phase to RL execution.</p>
-</div>
+<p>For more precision, rely on <a href="https://github.com/isri-aist/mc_external_forces_observer">mc_external_forces_observer</a></p>
 <hr />
 <h2 id="controller-tasks-and-constraints">Controller tasks and constraints<a class="headerlink" href="#controller-tasks-and-constraints" title="Permanent link">&para;</a></h2>
 <p>The default task and constraint set is intended as a starting point.</p>
@@ -1294,7 +1266,7 @@
   
     <span class="controller-page-date">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
-      <strong>Last updated:</strong> <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="July 28, 2026 06:20:17 UTC">July 28, 2026</span>
+      <strong>Last updated:</strong> <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 13, 2026 08:57:23 UTC">October 13, 2026</span>
     </span> -->
   
 

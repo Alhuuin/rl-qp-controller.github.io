@@ -1224,7 +1224,7 @@
 
 
 <h1 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h1>
-<p>If this is your first adaptation, working through <a href="../tutorial/">the tutorial</a> step by step — rather than skipping ahead — prevents most of the issues below.</p>
+<p>If this is your first adaptation, working through <a href="../tutorial/">the tutorial</a> step by step prevents most of the issues below.</p>
 <h2 id="controller-or-fsm-state-is-not-found">Controller or FSM state is not found<a class="headerlink" href="#controller-or-fsm-state-is-not-found" title="Permanent link">&para;</a></h2>
 <p>Check the exported controller name in <code>src/lib.cpp</code>, selection in <code>mc_rtc.yaml</code>, <code>EXPORT_SINGLE_STATE</code> names, <code>src/states/CMakeLists.txt</code>, and state search paths. A source file may exist without being built.</p>
 <h2 id="policy-folder-is-ignored">Policy folder is ignored<a class="headerlink" href="#policy-folder-is-ignored" title="Permanent link">&para;</a></h2>
@@ -1236,6 +1236,7 @@
 <div class="highlight"><pre><span></span><code>sum(observation base size x history)
 </code></pre></div>
 <p>Then verify aliases, convention defaults, joint-group sizes, <code>base_orientation.index</code>, <code>command.size</code>, force-sensor count, history, and repeated terms.</p>
+<p>If neeeded, you can check the expected input/output sizes of the policy loaded with the helper script.</p>
 <h2 id="onnx-action-size-mismatch">ONNX action size mismatch<a class="headerlink" href="#onnx-action-size-mismatch" title="Permanent link">&para;</a></h2>
 <p>The output size must equal resolved <code>action.joints</code>, not <code>controlled_joints</code>. Check the logged controller indices.</p>
 <h2 id="policy-loads-but-behavior-is-wrong">Policy loads but behavior is wrong<a class="headerlink" href="#policy-loads-but-behavior-is-wrong" title="Permanent link">&para;</a></h2>
@@ -1243,10 +1244,11 @@
 <p>Also verify the conventions in use, ensuring that no aliases or default parameters interfere with the intended observation construction.</p>
 <p>Review the implementation of each observation to confirm that it matches the expected behavior exactly.</p>
 <p>Finally, verify the observers used by the controller and ensure that they provide consistent and coherent information.</p>
+<p>Use <code>mc_log_ui</code> to display the logs.</p>
 <h2 id="body-body-sensor-or-force-sensor-is-missing">Body, body sensor, or force sensor is missing<a class="headerlink" href="#body-body-sensor-or-force-sensor-is-missing" title="Permanent link">&para;</a></h2>
 <p>These are different resources and APIs. Confirm the exact robot-module names and whether the observation expects a body, body sensor, or force sensor.</p>
 <h2 id="tilt-observer-fails">Tilt observer fails<a class="headerlink" href="#tilt-observer-fails" title="Permanent link">&para;</a></h2>
-<p>Verify <code>anchorFrameFunction</code> is registered before use, the datastore key matches, <code>createContactAnchor()</code> resolves required resources, and measured state is valid. See context-based patterns in <a href="../reference/adaptation-advice/">Adaptation advice</a>, or the worked example in <a href="../tutorial/03-state-estimation/">Wire up state estimation</a>.</p>
+<p>Verify <code>anchorFrameFunction</code> is registered before use, the datastore key matches, <code>createContactAnchor()</code> resolves required resources, and measured state is valid. See context-based patterns in <a href="../reference/adaptation-advice/">Adaptation advice</a>, or the tutorial example in <a href="../tutorial/03-state-estimation/">Wire up state estimation</a>.</p>
 <h2 id="template-examples-do-not-run">Template examples do not run<a class="headerlink" href="#template-examples-do-not-run" title="Permanent link">&para;</a></h2>
 <p>It is a template, meant to be adapted to a specific robot. The policy configurations intentionally contain placeholder joints and zero-byte placeholder ONNX files. See <a href="../tutorial/">the tutorial</a> for a full worked example, or its closing <a href="../tutorial/08-next-steps/#adapting-a-different-robot">Adapting a different robot</a> section for the generalized procedure.</p>
 
@@ -1269,7 +1271,7 @@
   
     <span class="controller-page-date">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
-      <strong>Last updated:</strong> <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 08:37:34 UTC">October 9, 2026</span>
+      <strong>Last updated:</strong> <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 13, 2026 08:57:23 UTC">October 13, 2026</span>
     </span> -->
   
 

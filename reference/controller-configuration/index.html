@@ -1197,8 +1197,8 @@
 
 <h1 id="controller-configuration">Controller configuration<a class="headerlink" href="#controller-configuration" title="Permanent link">&para;</a></h1>
 <p>The controller configuration file (<code>etc/&lt;Controller&gt;.in.yaml</code>) is structured like any standard mc_rtc controller configuration. This page documents the RL-specific settings it must contain, field by field, and the ObserverPipeline usually used.</p>
-<p>If you are working through <a href="../../tutorial/">the tutorial</a>, see <a href="../../tutorial/02-controller-configuration/">Configure the controller</a> for a worked example of filling in this file for a Unitree G1. If you are using an already-adapted version of this controller (such as G1, H1, or HRP5P), most of this is already done for you and you likely only need to verify a few settings rather than build them from scratch.</p>
-<p>Standard mc_rtc settings (FSM states, transitions, etc.) can be added or modified freely; the policy handling will not interfere with them.</p>
+<p>See the <a href="../../">project variants</a> for working examples.</p>
+<p>Standard mc_rtc settings (FSM states, transitions, etc.) can be added or modified freely; the policy handling will not interfere with them. See the <a href="https://jrl-umi3218.github.io/mc_rtc/tutorials.html">mc_rtc tutorials</a> for more information on them.</p>
 <h2 id="essential-configuration">Essential configuration<a class="headerlink" href="#essential-configuration" title="Permanent link">&para;</a></h2>
 <h3 id="1-select-the-robot-state-used-by-observations">1. Select the robot state used by observations<a class="headerlink" href="#1-select-the-robot-state-used-by-observations" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">robot</span><span class="p">:</span>
@@ -1240,7 +1240,7 @@
 <tbody>
 <tr>
 <td><code>policies_root</code></td>
-<td>Directory containing <code>conventions.yaml</code> and one subdirectory per policy. All policies under this root are loaded and can be switched to using the GUI.</td>
+<td>Directory containing <code>conventions.yaml</code> and one subdirectory per policy. All policies under this root are loaded and can be switched to using the GUI. By default the policies/ directory of this repo.</td>
 </tr>
 <tr>
 <td><code>default_policy</code></td>
@@ -1249,7 +1249,7 @@
 </tbody>
 </table>
 <h3 id="3-configure-the-observer-pipeline">3. Configure the observer pipeline<a class="headerlink" href="#3-configure-the-observer-pipeline" title="Permanent link">&para;</a></h3>
-<p>The selected observation sources must provide everything requested in the <code>observations.yaml</code> of the default policy. Verify or adjust the observer pipeline as needed:</p>
+<p>The selected observers must provide everything requested in the <code>observations.yaml</code> of the default policy. Verify or adjust the observer pipeline as needed:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">ObserverPipelines</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MainPipeline</span>
 <span class="w">  </span><span class="nt">gui</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
@@ -1264,11 +1264,11 @@
 <li><strong>Encoder</strong>: Provides joint positions and velocities.</li>
 <li><strong>BodySensor</strong>: Estimates the floating-base state from body sensor measurements and kinematics.</li>
 <li><strong>Tilt</strong>: Estimates floating-base tilt from IMU measurements and robot kinematics.</li>
-<li><strong>ExternalForcesObserver</strong>: Estimates external torques applied to the robot; implementation varies by robot.</li>
+<li><strong>ExternalForcesObserver</strong>: Estimates external torques applied to the robot; different options available depending on the robot. See the README of <a href="https://github.com/isri-aist/mc_external_forces_observer">mc_external_forces_observer</a>.</li>
 </ul>
 <h2 id="set-fsm-entry-point">Set FSM entry point<a class="headerlink" href="#set-fsm-entry-point" title="Permanent link">&para;</a></h2>
 <p>If needed, FSM states, transitions, and robot-specific state logic can be added as needed. The RL runtime will not interfere.</p>
-<p>One example of this would be the addition of a stantionary state, from which to start the actual RL state. Useful for robots which need a few seconds to stabilize. </p>
+<p>One example of this would be the addition of a stationary state, from which to start the actual RL state. Useful for robots which need a few seconds to stabilize. </p>
 <h2 id="validation-checklist">Validation checklist<a class="headerlink" href="#validation-checklist" title="Permanent link">&para;</a></h2>
 <ul class="task-list">
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>base_body</code> exists on the selected observation robot.</li>
@@ -1284,7 +1284,6 @@
 <li>Solver feedback selection based on the active control mode</li>
 <li>External-force estimator toggling through datastore calls</li>
 <li>Force-sensor-driven foot-contact management</li>
-<li>QP enforcement or bypass paths for torque commands</li>
 </ul>
 <p>Inspect the main controller and active FSM states together with the YAML configuration to understand the full control behavior. For context-based guidance, see <a href="../adaptation-advice/">Adaptation advice</a>.</p>
 <p>For a concrete example of that C++-side behavior — registering an <code>anchorFrameFunction</code> datastore callback for the <code>Tilt</code> observer — see <a href="../../tutorial/03-state-estimation/">Wire up state estimation</a> in the tutorial.</p>
@@ -1308,7 +1307,7 @@
   
     <span class="controller-page-date">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
-      <strong>Last updated:</strong> <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 10:46:12 UTC">October 9, 2026</span>
+      <strong>Last updated:</strong> <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 13, 2026 08:57:23 UTC">October 13, 2026</span>
     </span> -->
   
 
