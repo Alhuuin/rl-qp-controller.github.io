@@ -6,9 +6,9 @@ title: Configure the controller
 
 The controller configuration file (`etc/<Controller>.in.yaml`) is structured like any standard mc_rtc controller configuration. This page documents the RL-specific settings it must contain, field by field, and the ObserverPipeline usually used.
 
-If you are working through [the tutorial](../tutorial/index.md), see [Configure the controller](../tutorial/02-controller-configuration.md) for a worked example of filling in this file for a Unitree G1. If you are using an already-adapted version of this controller (such as G1, H1, or HRP5P), most of this is already done for you and you likely only need to verify a few settings rather than build them from scratch.
+See the [project variants](../index.md) for working examples.
 
-Standard mc_rtc settings (FSM states, transitions, etc.) can be added or modified freely; the policy handling will not interfere with them.
+Standard mc_rtc settings (FSM states, transitions, etc.) can be added or modified freely; the policy handling will not interfere with them. See the [mc_rtc tutorials](https://jrl-umi3218.github.io/mc_rtc/tutorials.html) for more information on them.
 
 ## Essential configuration
 
@@ -34,12 +34,12 @@ default_policy: my_policy
 
 | Key | Meaning |
 |---|---|
-| `policies_root` | Directory containing `conventions.yaml` and one subdirectory per policy. All policies under this root are loaded and can be switched to using the GUI. |
+| `policies_root` | Directory containing `conventions.yaml` and one subdirectory per policy. All policies under this root are loaded and can be switched to using the GUI. By default the policies/ directory of this repo. |
 | `default_policy` | Name of the first policy to run. Must match a loaded policy. |
 
 ### 3. Configure the observer pipeline
 
-The selected observation sources must provide everything requested in the `observations.yaml` of the default policy. Verify or adjust the observer pipeline as needed:
+The selected observers must provide everything requested in the `observations.yaml` of the default policy. Verify or adjust the observer pipeline as needed:
 
 ```yaml
 ObserverPipelines:
@@ -57,13 +57,13 @@ For common policy observations, observer types include:
 - **Encoder**: Provides joint positions and velocities.
 - **BodySensor**: Estimates the floating-base state from body sensor measurements and kinematics.
 - **Tilt**: Estimates floating-base tilt from IMU measurements and robot kinematics.
-- **ExternalForcesObserver**: Estimates external torques applied to the robot; implementation varies by robot.
+- **ExternalForcesObserver**: Estimates external torques applied to the robot; different options available depending on the robot. See the README of [mc_external_forces_observer](https://github.com/isri-aist/mc_external_forces_observer).
 
 ## Set FSM entry point
 
 If needed, FSM states, transitions, and robot-specific state logic can be added as needed. The RL runtime will not interfere.
 
-One example of this would be the addition of a stantionary state, from which to start the actual RL state. Useful for robots which need a few seconds to stabilize. 
+One example of this would be the addition of a stationary state, from which to start the actual RL state. Useful for robots which need a few seconds to stabilize. 
 
 ## Validation checklist
 
@@ -81,7 +81,6 @@ Different robot adaptations implement varying control logic in C++, such as:
 - Solver feedback selection based on the active control mode
 - External-force estimator toggling through datastore calls
 - Force-sensor-driven foot-contact management
-- QP enforcement or bypass paths for torque commands
 
 Inspect the main controller and active FSM states together with the YAML configuration to understand the full control behavior. For context-based guidance, see [Adaptation advice](adaptation-advice.md).
 

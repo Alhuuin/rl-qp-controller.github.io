@@ -4,7 +4,7 @@ title: Troubleshooting
 
 # Troubleshooting
 
-If this is your first adaptation, working through [the tutorial](tutorial/index.md) step by step — rather than skipping ahead — prevents most of the issues below.
+If this is your first adaptation, working through [the tutorial](tutorial/index.md) step by step prevents most of the issues below.
 
 ## Controller or FSM state is not found
 
@@ -28,6 +28,8 @@ sum(observation base size x history)
 
 Then verify aliases, convention defaults, joint-group sizes, `base_orientation.index`, `command.size`, force-sensor count, history, and repeated terms.
 
+If neeeded, you can check the expected input/output sizes of the policy loaded with the helper script.
+
 ## ONNX action size mismatch
 
 The output size must equal resolved `action.joints`, not `controlled_joints`. Check the logged controller indices.
@@ -42,13 +44,15 @@ Review the implementation of each observation to confirm that it matches the exp
 
 Finally, verify the observers used by the controller and ensure that they provide consistent and coherent information.
 
+Use `mc_log_ui` to display the logs.
+
 ## Body, body sensor, or force sensor is missing
 
 These are different resources and APIs. Confirm the exact robot-module names and whether the observation expects a body, body sensor, or force sensor.
 
 ## Tilt observer fails
 
-Verify `anchorFrameFunction` is registered before use, the datastore key matches, `createContactAnchor()` resolves required resources, and measured state is valid. See context-based patterns in [Adaptation advice](reference/adaptation-advice.md), or the worked example in [Wire up state estimation](tutorial/03-state-estimation.md).
+Verify `anchorFrameFunction` is registered before use, the datastore key matches, `createContactAnchor()` resolves required resources, and measured state is valid. See context-based patterns in [Adaptation advice](reference/adaptation-advice.md), or the tutorial example in [Wire up state estimation](tutorial/03-state-estimation.md).
 
 ## Template examples do not run
 

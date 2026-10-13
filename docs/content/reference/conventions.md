@@ -12,10 +12,6 @@ It can define:
 - named joint subsets used by observations and actions;
 - aliases between training-environment observation names and registered controller observation types.
 
-!!! tip "Optional ?"
-
-    
-
 Set the convention in `observations.yaml`:
 
 ```yaml
@@ -52,10 +48,10 @@ conventions:
   my_convention:
     joint_groups:
       all: [hip_yaw, hip_roll, hip_pitch, knee, ankle_pitch, ankle_roll, ...]
-      # legs: [hip_yaw, hip_roll, hip_pitch, knee, ankle_pitch, ankle_roll] # example
+      # other example : legs: [hip_yaw, hip_roll, hip_pitch, knee, ankle_pitch, ankle_roll]
 ```
 
-This is the minimum required: one convention name, at least one joint group (typically `all`), with joint order matching your training exactly.
+This is the **minimum required**: one convention name, at least one joint group (typically `all`), with joint order matching your training exactly.
 
 Joint groups can be used to specify either the action joints or the joints to consider for a specific observation.
 
@@ -115,7 +111,7 @@ Named joint groups define subsets and their order. They are used by:
 - `action.joints` and `action.controlled_joints` in `policy.yaml`
 - `parameters.joints` in observation entries in `observations.yaml`
 
-**The joint order must match your training environment exactly.** Reordering or omitting joints will silently produce incorrect behavior.
+**The joint order must match your training environment exactly.** Reordering or omitting joints will produce incorrect behavior.
 
 At minimum, define `all` to represent the complete actuated joint set in training order.
 

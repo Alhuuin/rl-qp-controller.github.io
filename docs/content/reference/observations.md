@@ -4,7 +4,7 @@ title: Available observations
 
 # Available observations
 
-The default observation registry currently exposes ten internal observation types. Training conventions may alias external names such as `joint_pos_rel` or `generated_commands` to these implementations.
+The default observation registry exposes ten internal observation types. If a needed observation is missing, it can be added : see [Add an observation](./add-observation.md).
 
 ## Observation pipeline
 
@@ -15,7 +15,7 @@ training_convention: mjlab
 history_order_newest_first: false
 
 observations:
-  - type: joint_pos_rel
+  - type: joint_pos
     name: joint_positions
     parameters:
       joints: all_no_grippers
@@ -33,7 +33,7 @@ The final policy input is concatenated in the same order as the YAML list. For e
 | Parameter | Meaning |
 |---|---|
 | `history` | Number of stored samples for this term. Must be positive. Default: `1`. |
-| `name` | Optional unique/debug label. Defaults to the requested YAML type. Useful when a type appears multiple times. |
+| `name` | Optional unique/debug label. Defaults to the requested YAML type. |
 | `scale` | Scalar or vector multiplier. A vector must match the observation size. |
 | `joints` | A named `conventions.yaml` joint group, or an explicit inline list of joint names — the group is resolved first, falling back to the list. Using a convention group here is a convenience, not a requirement; see [Training conventions: is a convention required?](conventions.md#is-a-convention-required). |
 

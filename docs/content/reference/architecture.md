@@ -303,7 +303,7 @@ The policy produces a position target `q_rl`. In the base template, the active s
 If QP is bypassed (`use_QP: false`), `NewRLQPController::byPassQPControl()` computes, for each controller joint:
 
 ```text
-tau = kp * (q_rl - q) - kd * q_dot
+tau_cmd = kp * (q_cmd - q) - kd * q_dot
 ```
 
 and writes torques directly to `robot().mbc().jointTorque`.

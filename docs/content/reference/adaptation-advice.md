@@ -10,7 +10,7 @@ This page highlights examples of adaptations encountered when integrating a new 
 
 ## Initial state
 
-Some robots can safely start directly in torque control and immediately execute the RL policy.
+Some robots can safely start directly and immediately execute the RL policy.
 
 Others require an initialization phase before enabling RL, for example to:
 
@@ -47,7 +47,7 @@ The selected strategy may also determine which observers and constraints are req
 
 ## Available sensors
 
-Not every robot provides the same measurements. Modifications of the observations implementations might be needed.
+Not every robot provides the same measurements. Modifications of the ObserverPipeline and the observations implementations might be needed.
 
 When configuring `observations.yaml`, only enable observations that can be computed from the available hardware.
 
@@ -60,7 +60,7 @@ Typical differences include:
 
 !!! tip
 
-    The G1, H1, and HRP5P repositories provide examples of observation configurations for robots with different sensing capabilities.
+    The G1, H1, and HRP5P repositories provide examples of observers and observation configurations for robots with different sensing capabilities.
 
 ---
 
@@ -78,7 +78,7 @@ The callback returns the anchor frame used as the tilt reference. Its implementa
 
 !!! example "Example"
 
-    The H1 implementations demonstrates how to register the `anchorFrameFunction` callback and implement the robot-specific anchor frame computation. [The tutorial](../tutorial/03-state-estimation.md) walks through the same wiring for G1, which estimates the anchor as an external-torque-weighted average of the two foot positions.
+    The H1 implementations demonstrates how to register the `anchorFrameFunction` callback and implement the robot-specific anchor frame computation. [The tutorial](../tutorial/03-state-estimation.md) walks through the same wiring for G1.
 
 !!! tip "Observer availability"
     Some of the Observers used here are recent additions still living in forks or an open pull request rather than a release. If you have not used the proposed [superbuild](https://github.com/safe-rl-qp/safe-rl-qp-mc-rtc-superbuild/tree/main), check what your own `mc_state_observation` install actually provides before relying on a given type being available.
@@ -104,15 +104,7 @@ These parameters directly depend on the robot hardware and should be reviewed wh
 
     The H1 and G1 implementations both illustrate a momentum-based configuration (`MomentumObserver`) without force/torque sensors, while the HRP5P implementation provides an example of a force-sensor-based configuration (`ForceSensorBased`).
 
----
-
-## Control modes
-
-Robots differ in the control interfaces they expose. Choose the controller architecture accordingly.
-
-!!! example "Example"
-
-    The H1 controller is designed around torque control, while the HRP5P implementation demonstrates a controller that transitions from an initialization phase to RL execution.
+For more precision, rely on [mc_external_forces_observer](https://github.com/isri-aist/mc_external_forces_observer)
 
 ---
 

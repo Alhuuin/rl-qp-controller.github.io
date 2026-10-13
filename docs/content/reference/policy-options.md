@@ -4,9 +4,9 @@ title: Policy options
 
 # Policy options
 
-This page documents fields read by the current policy parser. See [the tutorial](../tutorial/05-policy-configuration.md) for a complete worked example.
+This page documents fields read by the policy parser. See [the tutorial](../tutorial/05-policy-configuration.md) or the [fullExample](https://github.com/bastien-muraccioli/new-rl-qp-controller/tree/dev/policies/fullExample/policy.yaml) of the template for a complete example.
 
-`policy.yaml` lives alongside `observations.yaml` and an ONNX file in its own folder under `policies_root` — see [Training conventions §Location](conventions.md#location) for that layout, shared with `observations.yaml`.
+`policy.yaml` lives alongside `observations.yaml` and an ONNX file in its own folder under `policies_root`.
 
 ## Minimal example
 
